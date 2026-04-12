@@ -38,15 +38,18 @@
   <section class="case__section">
     <div class="case__section-label">§ 01 · BACKGROUND</div>
     <h2>Why build my own AI assistant when ChatGPT exists?</h2>
-    <p>I was a heavy ChatGPT and Claude.ai user, but every conversation started cold. I'd re-explain that I'm a UCSD CogSci transfer student, that I'm building a portfolio, that my girlfriend is going to Pepperdine for law school, that I have a 10-year-old cat named Mango. Useful context — repeated dozens of times.</p>
-    <p>The actual problem wasn't intelligence. It was <em>persistent context</em>. I wanted an assistant that knew my real life and could push information to me proactively (morning briefs, deadline reminders, market updates) rather than waiting for me to open a chat window.</p>
-    <p>So I built Doudou. The name means "little bean" in Mandarin — a small thing that sits in your pocket and grows with you.</p>
+    <p>I'm a heavy user of all three frontier LLMs — ChatGPT Plus, Claude (started on Pro, upgraded to Max once it pulled ahead on coding and general reasoning), and Gemini Pro — and I kept hitting the same wall: <b>LLMs only speak when spoken to</b>. I'd finish a workout and want a market brief, or be walking to class and remember I needed to set a reminder for a deadline — but opening a chat, typing the question, and parsing the answer all required me to stop what I was doing.</p>
+    <p>The bottleneck wasn't intelligence or memory (both have been solved across all three). It was <em>initiative</em>. I wanted an assistant that could push the right information to me at the right time — a morning brief before I'm awake, a market recap when the bell rings, a deadline reminder two days out — without me having to ask.</p>
+    <p>So I built Doudou on top of Claude. The choice was deliberate: after using all three daily, Claude had the strongest long-context reasoning for the kind of multi-step, tool-coordinating prompts Doudou needed, and Claude Code made the server side work trivially simple — I could iterate on the bot itself by talking to it in natural language. ChatGPT's API has more third-party wrappers, Gemini is cheapest, but neither fit the "AI that rewrites its own instructions" pattern I wanted.</p>
+    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">About the name.</h3>
+    <p>Doudou was my dog. Wherever I went, he went — not because I called him, just because that was the only place he wanted to be. He went missing a few years ago. I never found him. I named this after him because building it, some nights, feels like he's still in the room. Some goodbyes you don't get to have.</p>
   </section>
 
   <section class="case__section">
     <div class="case__section-label">§ 02 · ARCHITECTURE DECISIONS</div>
     <h2>Why Telegram, why self-hosted, why these specific tools.</h2>
-    <p><b>Telegram instead of Discord, iMessage, or a custom app.</b> Telegram has a clean Bot API, supports rich formatting, syncs across devices, and I already check it dozens of times a day. Building a custom mobile app would have taken weeks and I would have stopped using it in a week. The win was meeting myself where I already was.</p>
+    <p>Three decisions shaped Doudou's architecture, each one a trade-off I can defend.</p>
+    <p><b>Telegram over Discord, iMessage, or a custom app.</b> Telegram has a clean Bot API, supports rich formatting, syncs across devices, and I already check it dozens of times a day. Building a custom mobile app would have taken weeks and I would have stopped using it in a week. The win was meeting myself where I already was.</p>
     <p><b>Self-hosted on a $12/month DigitalOcean droplet instead of serverless.</b> Serverless (AWS Lambda, Cloudflare Workers) would have been cheaper at low volume but hard to debug, with cold-start latency and no persistent state. A small Ubuntu VPS gives me a real machine I can SSH into, run cron jobs on, and treat like a long-running service. The $12/month is also an honest forcing function — if Doudou stops being useful, I'll feel the bill.</p>
     <p><b>Claude API instead of OpenAI.</b> I trust Claude more for long-context reasoning and the API is straightforward. I use the model directly through Claude Code running in tmux on the server — which means Doudou itself <em>is</em> Claude, with a custom system prompt and tools.</p>
     <p><b>Five tools that compose into one product:</b></p>
@@ -57,6 +60,15 @@
       <li><b>Week preview</b> — earnings calendar, macro events, what to watch</li>
       <li><b>Reminders</b> — course deadlines, upcoming events, anything I throw at it in natural language</li>
     </ul>
+
+    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">Why not OpenClaw.</h3>
+    <p>Before building Doudou, I evaluated OpenClaw — the most popular open-source self-hosted AI agent in 2026, with a similar Telegram-first interface. I briefly deployed it on the same DigitalOcean droplet, then stopped. The reasons were security-shaped:</p>
+    <ul>
+      <li>OpenClaw agents get <b>system-level shell access</b> by default — any prompt injection becomes arbitrary code execution on the host</li>
+      <li>A recent Shodan scan found <b>42,665 exposed OpenClaw instances, 93.4% with authentication bypasses</b> — the real-world security posture of deployed instances is terrible</li>
+      <li>CVE-2026-25253 (prompt injection via processed documents) hit the project earlier this year, and the community "security checklist" required to run it safely is long enough to suggest the default configuration isn't safe</li>
+    </ul>
+    <p>For a personal assistant that reads my calendar, finances, and reminders, I wanted a tighter attack surface. Claude Code running in tmux + a thin custom wrapper gives me <em>fewer</em> moving parts, not more: no web gateway, no general-purpose shell agent, no messaging broker besides Telegram's own API. Doudou can't run arbitrary commands because I never gave it the tool to do so.</p>
   </section>
 
   <section class="case__section">
@@ -74,19 +86,32 @@
     <h3>Failure 3: Evening reports kept blowing the context budget.</h3>
     <p>Even with nightly restarts, a single evening report could consume 30K+ tokens because Doudou would web-search 10–15 sources per report. By itself fine. Compounded over the day — not fine.</p>
     <p><b>Fix:</b> Added explicit constraints in <code>CLAUDE.md</code> capping web searches per report at 3–5, with priority order. Also added compression — Doudou now summarizes long search results before stitching them into the final message. Token usage per report dropped 60%+.</p>
+    <p style="margin-top: 24px;">The common thread across all three failures: the AI call was never the problem. The problem was the infrastructure wrapping it.</p>
+
+    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">The trade-offs I chose.</h3>
+    <p>Doudou runs on top of the Claude Code CLI inside a tmux session, with a bash script using <code>send-keys</code> to simulate the keystrokes that launch it. The state — context, preferences, tool definitions — lives in a single <code>CLAUDE.md</code> file loaded into the model on every restart.</p>
+    <p>From a pure architecture standpoint, this is technical debt. A cleaner design would use the Anthropic Python SDK directly with a <code>systemd</code>-managed daemon, SQLite for structured short/long-term state, and a vector DB + RAG for retrieval memory. I know this. I'm not building it — yet.</p>
+    <p>The reason is deliberate: every refactor is a new bug surface. Doudou is in production, by which I mean <em>I use it every single day</em>, and any migration could break the exact loop I'm trying to preserve. What I did instead was invest in making the current hack <em>survive unattended</em>: a <code>healthcheck.sh</code> watchdog runs every 5 minutes and auto-recovers within ~10 seconds of a crash. Production stability beats architectural purity when the architecture is already doing its job.</p>
+    <p>The v2 rewrite is scoped and mapped out. It will ship when the cost of the current system's ugliness finally exceeds the cost of a careful migration. That day isn't today.</p>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 04 · THE SELF-ITERATION MECHANISM</div>
-    <h2>Doudou can update its own configuration.</h2>
-    <p>The most interesting design decision: Doudou runs in <code>--dangerously-skip-permissions</code> mode, which means it can read and write its own <code>CLAUDE.md</code> system prompt. I added an explicit "self-iteration" protocol:</p>
+    <div class="case__section-label">§ 04 · SECURITY & THE ITERATION LOOP</div>
+    <h2>OS-level enforcement over application-level trust.</h2>
+    <p>There's an obvious tension in this project. § 02 criticized OpenClaw for giving agents system-level shell access, and yet Doudou has <code>web_search</code> enabled and originally ran in <code>--dangerously-skip-permissions</code> mode with write access to its own <code>CLAUDE.md</code>. A malicious news article could, in principle, instruct Doudou to rewrite its own instructions — implanting persistent behavior changes the next time it restarts.</p>
+    <p>To solve this, I rely on Linux file permissions, not LLM guardrails:</p>
+    <pre><code>chown root:root /home/doudu/CLAUDE.md
+chmod 444 /home/doudu/CLAUDE.md</code></pre>
+    <p>The Doudou process runs as the unprivileged user <code>doudu</code>. It <em>literally cannot</em> rewrite its own brain — the OS kernel denies the syscall before the model ever gets to reason about permission. This is a Zero-Trust posture: don't trust the application's logical boundaries; trust the system's physical boundaries.</p>
+
+    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">The iteration loop, reshaped.</h3>
+    <p>Self-iteration still works. It just routes through a human:</p>
     <ul>
-      <li>If I send the word <b>"evolve"</b>, Doudou reviews recent conversations, identifies what worked and what didn't, and proposes specific updates to its own behavior.</li>
-      <li>It must show me the proposed diff and get my confirmation before writing.</li>
-      <li>It must back up the previous version (<code>cp CLAUDE.md CLAUDE.md.bak</code>) before any change.</li>
-      <li>If I give passive feedback like "the format is too long" or "I never use that feature", Doudou proactively suggests a config change.</li>
+      <li>If I send <b>"evolve"</b>, Doudou reviews recent conversations and proposes a diff to <code>CLAUDE.md</code>.</li>
+      <li>The diff is <em>output only</em> — Doudou cannot apply it.</li>
+      <li>I review, ssh in, unlock the file as root, apply the change, and re-lock.</li>
     </ul>
-    <p>This means Doudou gets <em>more useful over time without me having to manually maintain it</em>. The friction of adding a new feature dropped to almost zero — I just describe what I want, it proposes the implementation, I approve.</p>
+    <p>This increases friction on every config change. That's the point. Anything that edits the system prompt of an agent with tool access should be observable, reversible, and human-gated.</p>
   </section>
 
   <section class="case__section">
@@ -94,7 +119,7 @@
     <h2>Owning the full stack taught me what frameworks hide.</h2>
     <p><b>The hard parts weren't the AI calls.</b> They were the boring infrastructure: tmux session persistence, cron job timing, restart logic, environment variables, log rotation. The actual Claude API integration was maybe 5% of the effort.</p>
     <p><b>Production debugging is a different skill.</b> Reading a stack trace from your laptop is one thing. SSH-ing into a remote machine at 11pm because your bot stopped responding, attaching to tmux, and reasoning about whether the issue is the network, the model, the script, or your own logic — that's a different muscle. I built it on Doudou.</p>
-    <p><b>Persistent context beats a bigger model.</b> A small, well-prompted Claude that knows me genuinely outperforms a generic GPT-4-class model that doesn't, for the actual tasks I do every day. The leverage is in the system prompt and the tools, not in the model.</p>
+    <p><b>Proactive beats reactive.</b> Every LLM chatbot is reactive — it waits for you to ask. Doudou pushes: a morning brief before I check the news, a market recap when I'm cooking dinner, a reminder two days before a deadline I'd have forgotten. That delivery-layer decision matters more than model quality for the tasks I actually do every day.</p>
     <p><b>Daily use is the only real test.</b> Most "side projects" die because nobody uses them. I dogfood Doudou every morning and every night. If something annoys me, I fix it that day. The product gets better because I am simultaneously the engineer and the only user that matters.</p>
   </section>
 
@@ -105,7 +130,7 @@
     <ul>
       <li><b>RAG over my notes</b> — point Doudou at my Obsidian vault so it can answer questions about what I've read</li>
       <li><b>Voice output</b> — a daily audio brief for my morning walk</li>
-      <li><b>Multi-user mode</b> — let close friends or my girlfriend interact with their own Doudou instances on the same server</li>
+      <li><b>Multi-user mode</b> — let close friends interact with their own Doudou instances on the same server</li>
     </ul>
     <p>But I'm in no rush. Doudou's current version is genuinely useful. Adding features for the sake of features is exactly the trap I'm trying to avoid.</p>
   </section>
