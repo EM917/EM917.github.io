@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doudou — Case Study · YiLong Mei</title>
+<meta name="description" content="A technical writeup of Doudou — a Telegram AI assistant built on Claude API, self-hosted on Ubuntu, running daily.">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="nav__brand">YILONG&nbsp;MEI</a>
+  <nav class="nav__links">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<article class="case">
+  <div class="case__meta">DRAWING NO. 001 — DOUDOU — REV. 2026.04</div>
+  <h1 class="case__title">Doudou: <em>building an AI assistant<br>I actually use every day.</em></h1>
+
+  <div class="case__divider">
+    <span>STATUS · LIVE</span>
+    <span>UPTIME · 142 DAYS</span>
+    <span>STACK · TELEGRAM + CLAUDE API</span>
+    <span>HOST · DIGITALOCEAN UBUNTU</span>
+  </div>
+
+  <div class="case__lede">
+    Doudou is a Telegram bot I built and have been using daily since late 2025. It knows my courses, my deadlines, my finances, and the news I follow. This is the writeup of how it works, what broke along the way, and what I learned from owning the full stack.
+  </div>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 01 · BACKGROUND</div>
+    <h2>Why build my own AI assistant when ChatGPT exists?</h2>
+    <p>I was a heavy ChatGPT and Claude.ai user, but every conversation started cold. I'd re-explain that I'm a UCSD CogSci transfer student, that I'm building a portfolio, that my girlfriend is going to Pepperdine for law school, that I have a 10-year-old cat named Mango. Useful context — repeated dozens of times.</p>
+    <p>The actual problem wasn't intelligence. It was <em>persistent context</em>. I wanted an assistant that knew my real life and could push information to me proactively (morning briefs, deadline reminders, market updates) rather than waiting for me to open a chat window.</p>
+    <p>So I built Doudou. The name means "little bean" in Mandarin — a small thing that sits in your pocket and grows with you.</p>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 02 · ARCHITECTURE DECISIONS</div>
+    <h2>Why Telegram, why self-hosted, why these specific tools.</h2>
+    <p><b>Telegram instead of Discord, iMessage, or a custom app.</b> Telegram has a clean Bot API, supports rich formatting, syncs across devices, and I already check it dozens of times a day. Building a custom mobile app would have taken weeks and I would have stopped using it in a week. The win was meeting myself where I already was.</p>
+    <p><b>Self-hosted on a $12/month DigitalOcean droplet instead of serverless.</b> Serverless (AWS Lambda, Cloudflare Workers) would have been cheaper at low volume but hard to debug, with cold-start latency and no persistent state. A small Ubuntu VPS gives me a real machine I can SSH into, run cron jobs on, and treat like a long-running service. The $12/month is also an honest forcing function — if Doudou stops being useful, I'll feel the bill.</p>
+    <p><b>Claude API instead of OpenAI.</b> I trust Claude more for long-context reasoning and the API is straightforward. I use the model directly through Claude Code running in tmux on the server — which means Doudou itself <em>is</em> Claude, with a custom system prompt and tools.</p>
+    <p><b>Five tools that compose into one product:</b></p>
+    <ul>
+      <li><b>Markets</b> — daily close prices for indices, my watchlist, and crypto</li>
+      <li><b>News brief</b> — AI industry headlines and broader macro events</li>
+      <li><b>Daily recap</b> — evening summary message that combines markets + news + reminders into a single push</li>
+      <li><b>Week preview</b> — earnings calendar, macro events, what to watch</li>
+      <li><b>Reminders</b> — course deadlines, upcoming events, anything I throw at it in natural language</li>
+    </ul>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 03 · WHAT BROKE</div>
+    <h2>Three real failures and how I fixed them.</h2>
+
+    <h3>Failure 1: Context window overflow.</h3>
+    <p>Three days in, Doudou stopped responding. SSH'd in, attached to tmux, and saw the issue: a single 200K-token Claude session had eaten through everything. Each evening report was triggering a dozen+ web searches, and the conversation history was accumulating without limit.</p>
+    <p><b>Fix:</b> A cron job at 4am PDT that hard-restarts the Claude process every 24 hours. It kills the existing process, starts a fresh tmux session, re-launches Claude with the standard flags, and auto-confirms the trust prompt. Context resets nightly. Doudou loses memory of the previous day's casual chat — but it doesn't matter, because all the <em>persistent</em> context lives in <code>CLAUDE.md</code>, not in the conversation history.</p>
+
+    <h3>Failure 2: The restart script wasn't actually working.</h3>
+    <p>First version of the cron script used <code>su - doudu -c "claude ..."</code>. It looked correct. But the Telegram plugin wouldn't bind — the process was running but messages weren't getting through. The reason: spawning Claude as a subprocess of <code>su -c</code> doesn't give it a full interactive environment, which the Telegram plugin quietly depends on.</p>
+    <p><b>Fix:</b> Rewrote the script to mimic exactly what I do manually — open tmux, spawn an interactive shell, run Claude inside it, send the trust-prompt confirmation as a keystroke. Less elegant, but it's the version that actually works. <em>Lesson: when something works in your hands but breaks in automation, the gap is almost always environment.</em></p>
+
+    <h3>Failure 3: Evening reports kept blowing the context budget.</h3>
+    <p>Even with nightly restarts, a single evening report could consume 30K+ tokens because Doudou would web-search 10–15 sources per report. By itself fine. Compounded over the day — not fine.</p>
+    <p><b>Fix:</b> Added explicit constraints in <code>CLAUDE.md</code> capping web searches per report at 3–5, with priority order. Also added compression — Doudou now summarizes long search results before stitching them into the final message. Token usage per report dropped 60%+.</p>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 04 · THE SELF-ITERATION MECHANISM</div>
+    <h2>Doudou can update its own configuration.</h2>
+    <p>The most interesting design decision: Doudou runs in <code>--dangerously-skip-permissions</code> mode, which means it can read and write its own <code>CLAUDE.md</code> system prompt. I added an explicit "self-iteration" protocol:</p>
+    <ul>
+      <li>If I send the word <b>"evolve"</b>, Doudou reviews recent conversations, identifies what worked and what didn't, and proposes specific updates to its own behavior.</li>
+      <li>It must show me the proposed diff and get my confirmation before writing.</li>
+      <li>It must back up the previous version (<code>cp CLAUDE.md CLAUDE.md.bak</code>) before any change.</li>
+      <li>If I give passive feedback like "the format is too long" or "I never use that feature", Doudou proactively suggests a config change.</li>
+    </ul>
+    <p>This means Doudou gets <em>more useful over time without me having to manually maintain it</em>. The friction of adding a new feature dropped to almost zero — I just describe what I want, it proposes the implementation, I approve.</p>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 05 · WHAT I LEARNED</div>
+    <h2>Owning the full stack taught me what frameworks hide.</h2>
+    <p><b>The hard parts weren't the AI calls.</b> They were the boring infrastructure: tmux session persistence, cron job timing, restart logic, environment variables, log rotation. The actual Claude API integration was maybe 5% of the effort.</p>
+    <p><b>Production debugging is a different skill.</b> Reading a stack trace from your laptop is one thing. SSH-ing into a remote machine at 11pm because your bot stopped responding, attaching to tmux, and reasoning about whether the issue is the network, the model, the script, or your own logic — that's a different muscle. I built it on Doudou.</p>
+    <p><b>Persistent context beats a bigger model.</b> A small, well-prompted Claude that knows me genuinely outperforms a generic GPT-4-class model that doesn't, for the actual tasks I do every day. The leverage is in the system prompt and the tools, not in the model.</p>
+    <p><b>Daily use is the only real test.</b> Most "side projects" die because nobody uses them. I dogfood Doudou every morning and every night. If something annoys me, I fix it that day. The product gets better because I am simultaneously the engineer and the only user that matters.</p>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 06 · WHAT'S NEXT</div>
+    <h2>Where Doudou is going.</h2>
+    <p>Open-ended. Some things I'm considering:</p>
+    <ul>
+      <li><b>RAG over my notes</b> — point Doudou at my Obsidian vault so it can answer questions about what I've read</li>
+      <li><b>Voice output</b> — a daily audio brief for my morning walk</li>
+      <li><b>Multi-user mode</b> — let close friends or my girlfriend interact with their own Doudou instances on the same server</li>
+    </ul>
+    <p>But I'm in no rush. Doudou's current version is genuinely useful. Adding features for the sake of features is exactly the trap I'm trying to avoid.</p>
+  </section>
+
+  <div class="case__footer">
+    <a href="https://github.com/EM917/doudou" target="_blank" rel="noopener" class="link">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>github.com/EM917/doudou</span>
+      <span class="link__arrow">→</span>
+    </a>
+    <a href="index.html" class="case__back">← Back to portfolio</a>
+  </div>
+</article>
+
+<footer class="footer">
+  <div class="footer__line">
+    <span>© 2026 YILONG MEI</span>
+    <span>SAN DIEGO · SOON LOS ANGELES</span>
+    <span>LAST UPDATED 2026.04</span>
+  </div>
+</footer>
+
+<script src="scroll.js"></script>
+</body>
+</html>

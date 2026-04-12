@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YiLong Mei — AI Product Engineer</title>
+<meta name="description" content="YiLong (Elon) Mei — AI Product Engineer. UCSD Cognitive Science '26. Building Doudou, a Telegram AI assistant.">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__brand">YILONG&nbsp;MEI</div>
+  <nav class="nav__links">
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero__status"><span class="dot"></span>OPEN TO SUMMER 2026 INTERNSHIPS &amp; NEW-GRAD ROLES</div>
+  <div class="hero__meta">DRAWING NO. 001 — REV. 2026.04</div>
+  <h1 class="hero__title">
+    AI Product Engineer<br>
+    <em>building small, real AI tools.</em>
+  </h1>
+  <div class="hero__divider">
+    <span>SCALE 1:1</span>
+    <span>UCSD&nbsp;'26</span>
+    <span>SAN DIEGO, CA</span>
+    <span>STATUS · OPEN</span>
+  </div>
+  <p class="hero__sub">
+    Cognitive Science (Design &amp; Interaction) at UC&nbsp;San&nbsp;Diego.<br>
+    Currently building <b>Doudou</b> — a Telegram AI assistant I use every day.
+  </p>
+  <a href="#work" class="hero__cta">SEE THE WORK →</a>
+</section>
+
+<section class="about">
+  <div class="section__label">§ 01 · ABOUT</div>
+  <h2 class="about__title">I build AI products.</h2>
+  <p class="about__sub">UCSD Cognitive Science '26 · building Doudou — a personal AI assistant · open to AI Product Engineer roles</p>
+</section>
+
+<section class="stack">
+  <div class="section__label">§ 02 · STACK</div>
+  <div class="stack__grid">
+    <div class="stack__col">
+      <div class="stack__col-label">[ BUILD ]</div>
+      <div class="stack__col-items">Python · Claude API · OpenAI API · pandas · scikit-learn</div>
+    </div>
+    <div class="stack__col">
+      <div class="stack__col-label">[ DESIGN ]</div>
+      <div class="stack__col-items">Figma · HTML / CSS / JS · prototyping</div>
+    </div>
+    <div class="stack__col">
+      <div class="stack__col-label">[ DEPLOY ]</div>
+      <div class="stack__col-items">Linux (Ubuntu) · DigitalOcean · tmux / cron · Git</div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="section__label">§ 03 · SELECTED WORK</div>
+
+  <article class="project">
+    <header class="project__header">
+      <div class="project__num">[ 01 ]</div>
+      <div class="project__head">
+        <h3 class="project__title">Doudou</h3>
+        <p class="project__sub">A Telegram AI assistant that knows my context</p>
+      </div>
+      <div class="project__year">2025 — now</div>
+    </header>
+
+    <div class="phones">
+      <figure class="phone">
+        <span class="phone__badge"><span class="phone__badge-dot"></span>LIVE</span>
+        <img src="assets/doudou-evening.jpg" alt="Doudou's evening report: market close, watchlist, today's recap, AI news, next week preview, and upcoming reminders." loading="lazy" />
+      </figure>
+      <p class="phones__caption">
+        A real evening report from Doudou — five tools (markets, news, recap, week preview, reminders) coordinating into one message, every night.
+      </p>
+    </div>
+
+    <div class="project__body">
+      <div class="project__block">
+        <div class="block__label">[ PROBLEM ]</div>
+        <p>I wanted an AI assistant that knew my real context — courses, deadlines, finances, news I follow — without me having to re-explain it every time.</p>
+      </div>
+      <div class="project__block">
+        <div class="block__label">[ DECISION ]</div>
+        <p>Built it on Telegram (where I already live) using Claude API. Self-hosted on a DigitalOcean Ubuntu droplet I administer myself. Five tools: market report, news brief, daily recap, week preview, reminders.</p>
+      </div>
+      <div class="project__block">
+        <div class="block__label">[ LEARNED ]</div>
+        <p>Owning the full stack — server, cron jobs, context window management, prompt iteration — taught me more than any course. The hard parts weren't the AI calls, they were the boring infrastructure underneath.</p>
+      </div>
+    </div>
+
+    <div class="project__links">
+      <a href="doudou.html" class="link">
+        <span>Read the technical writeup</span>
+        <span class="link__arrow">→</span>
+      </a>
+      <a href="https://github.com/EM917/doudou" target="_blank" rel="noopener" class="link" style="margin-left:24px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>github.com/EM917/doudou</span>
+        <span class="link__arrow">→</span>
+      </a>
+    </div>
+  </article>
+
+  <article class="project">
+    <header class="project__header">
+      <div class="project__num">[ 02 ]</div>
+      <div class="project__head">
+        <h3 class="project__title">Power Outage Duration Analysis</h3>
+        <p class="project__sub">COGS 108 — Data Science in Practice</p>
+      </div>
+      <div class="project__year">Fall 2025</div>
+    </header>
+    <div class="project__body">
+      <div class="project__block">
+        <div class="block__label">[ PROBLEM ]</div>
+        <p>Predict U.S. power outage duration from event metadata: weather, region, cause, time-of-year, customer count.</p>
+      </div>
+      <div class="project__block">
+        <div class="block__label">[ DECISION ]</div>
+        <p>Cleaned a 1500+ row dataset, ran exploratory analysis, then compared OLS regression, PCA, and Random Forest models. Final Random Forest: R²&nbsp;=&nbsp;0.46, with feature importance documented for the top predictors.</p>
+      </div>
+      <div class="project__block">
+        <div class="block__label">[ LEARNED ]</div>
+        <p>Feature engineering moved the needle more than model choice. A single well-derived feature beat the lift from switching model families — a useful reminder that domain framing usually wins over algorithmic complexity.</p>
+      </div>
+    </div>
+    <div class="project__links">
+      <span class="link link--muted">Course repo (private)</span>
+    </div>
+  </article>
+
+  <article class="project">
+    <header class="project__header">
+      <div class="project__num">[ 03 ]</div>
+      <div class="project__head">
+        <h3 class="project__title">In Progress</h3>
+        <p class="project__sub">Spring 2026 coursework — case studies coming after the quarter</p>
+      </div>
+      <div class="project__year">Spring 2026</div>
+    </header>
+    <div class="wip-grid">
+      <div class="wip">
+        <div class="wip__label">[ COGS 127 ]</div>
+        <div class="wip__title">Data-Driven UX</div>
+        <div class="wip__sub">8-week team project redesigning a widely-used app for professional users.</div>
+      </div>
+      <div class="wip">
+        <div class="wip__label">[ COGS 102C ]</div>
+        <div class="wip__title">Cognitive Design</div>
+        <div class="wip__sub">Applying cognitive science principles to interface design.</div>
+      </div>
+      <div class="wip">
+        <div class="wip__label">[ DSGN 100 ]</div>
+        <div class="wip__title">Prototyping</div>
+        <div class="wip__sub">Iterative prototyping foundations.</div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="contact" id="contact">
+  <div class="section__label">§ 04 · CONTACT</div>
+  <div class="contact__icons">
+    <a href="https://github.com/EM917" target="_blank" rel="noopener" class="contact__icon" aria-label="GitHub">
+      <svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>GITHUB</span>
+    </a>
+    <a href="https://linkedin.com/in/yilong-elon-mei-953333260" target="_blank" rel="noopener" class="contact__icon" aria-label="LinkedIn">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      <span>LINKEDIN</span>
+    </a>
+    <a href="mailto:william.mei0917@gmail.com" class="contact__icon" aria-label="Email">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg>
+      <span>EMAIL</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__line">
+    <span>© 2026 YILONG MEI</span>
+    <span>SAN DIEGO · SOON LOS ANGELES</span>
+    <span>LAST UPDATED 2026.04</span>
+  </div>
+</footer>
+
+<script src="scroll.js"></script>
+</body>
+</html>
