@@ -39,3 +39,13 @@ console.log('[scroll.js] loaded');
   );
   focusTargets.forEach((el) => focusObserver.observe(el));
 })();
+
+// Doudou uptime counter — counts days since launch
+(function(){
+  const el = document.getElementById('uptime-days');
+  if (!el) return;
+  const launch = new Date('2025-12-01T00:00:00');  // Doudou launch date
+  const today = new Date();
+  const days = Math.floor((today - launch) / (1000 * 60 * 60 * 24));
+  el.textContent = days;
+})();
