@@ -43,13 +43,18 @@
     <p>So I built Doudou on top of Claude. The choice was deliberate: after using all three daily, Claude had the strongest long-context reasoning for the kind of multi-step, tool-coordinating prompts Doudou needed, and Claude Code made the server side work trivially simple — I could iterate on the bot itself by talking to it in natural language. ChatGPT's API has more third-party wrappers, Gemini is cheapest, but neither fit the "AI that rewrites its own instructions" pattern I wanted.</p>
     <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">About the name.</h3>
     <p>Doudou was my dog. Wherever I went, he went — not because I called him, just because that was the only place he wanted to be. He went missing a few years ago. I never found him. I named this after him because building it, some nights, feels like he's still in the room. Some goodbyes you don't get to have.</p>
+    <figure style="margin: 32px 0; text-align: center;">
+      <img src="assets/doudou-dog.jpg" alt="Doudou, asleep on a brown leather sofa" style="max-width: 420px; width: 100%; height: auto; border-radius: 2px; opacity: 0.88; filter: saturate(0.85);">
+      <figcaption style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-faint); letter-spacing: 0.18em; margin-top: 10px;">DOUDOU · THE ORIGINAL</figcaption>
+    </figure>
   </section>
 
   <section class="case__section">
     <div class="case__section-label">§ 02 · ARCHITECTURE DECISIONS</div>
     <h2>Why Telegram, why self-hosted, why these specific tools.</h2>
     <p>Three decisions shaped Doudou's architecture, each one a trade-off I can defend.</p>
-    <p><b>Telegram over Discord, iMessage, or a custom app.</b> Telegram has a clean Bot API, supports rich formatting, syncs across devices, and I already check it dozens of times a day. Building a custom mobile app would have taken weeks and I would have stopped using it in a week. The win was meeting myself where I already was.</p>
+    <p><b>Telegram over iMessage, Signal, or Discord.</b> I compared the four before building. The decision came down to two things: the Bot API is the cleanest of the four (no OAuth flow, no business verification), and the deployment story is a single long-lived script against a well-documented HTTPS endpoint. That combination of "low friction to ship" and "stable target to debug against" mattered more to me than any specific social habit with the app.</p>
+    <p>What Telegram is <em>not</em> is end-to-end encrypted. Bot conversations travel as cloud chats, which means Telegram's servers can decrypt them — only Secret Chats are E2EE, and Secret Chats aren't available for bots. Doudou is therefore not a place I'd put anything more sensitive than what I'd willingly send over iMessage with cloud backup on: watchlist tickers, deadline reminders, weekend plans. For a workload where that's the actual threat model, Telegram is fine. I chose it with eyes open.</p>
     <p><b>Self-hosted on a $12/month DigitalOcean droplet instead of serverless.</b> Serverless (AWS Lambda, Cloudflare Workers) would have been cheaper at low volume but hard to debug, with cold-start latency and no persistent state. A small Ubuntu VPS gives me a real machine I can SSH into, run cron jobs on, and treat like a long-running service. The $12/month is also an honest forcing function — if Doudou stops being useful, I'll feel the bill.</p>
     <p><b>Claude API instead of OpenAI.</b> I trust Claude more for long-context reasoning and the API is straightforward. I use the model directly through Claude Code running in tmux on the server — which means Doudou itself <em>is</em> Claude, with a custom system prompt and tools.</p>
     <p><b>Five tools that compose into one product:</b></p>
