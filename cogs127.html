@@ -125,7 +125,8 @@
 
 <article class="case">
   <div class="case__meta">DRAWING NO. 002 — COGS 127 — REV. 2026.05</div>
-  <h1 class="case__title">Redesigning Asana <em>for the people who run<br>church livestreams.</em></h1>
+  <h1 class="case__title">Coordinating the volunteers <em>who run<br>church livestreams.</em></h1>
+  <p class="case__subtitle" style="font-family:'Newsreader',Georgia,serif;font-size:1.18rem;line-height:1.55;opacity:.72;max-width:62ch;margin:.55rem 0 0;">An 8-week team project redesigning Asana&rsquo;s Sunday-service workflow for small-church tech volunteers.</p>
 
   <div class="case__divider">
     <span>STATUS · USER TESTING</span>
@@ -135,50 +136,41 @@
   </div>
 
   <div class="case__lede">
-    This was an 8-week team project. We redesigned Asana for the volunteers who run tech at small
-    churches, and the testing round is what changed our direction. A few of the live features we
-    were most excited about turned out to be the ones users cared about the least.
+    Going in, we were pretty sure we knew what these teams needed, so we built four high-fidelity concepts to prove it. Then we put them in front of two people who actually run tech at a church. Turns out the features we were proudest of were the ones they cared about least&nbsp;&mdash; and that one round of testing is what steered the whole project.
   </div>
 
-  <!-- ============ 01 CONTEXT ============ -->
+  <!-- ============ 01 THE PROBLEM ============ -->
   <section class="case__section">
-    <div class="case__section-label">§ 01 · CONTEXT</div>
-    <h2>Who we designed for, and why Asana</h2>
-    <p>Our users are the volunteers who run the livestream at small churches. They set up the
-      cameras, run the audio, control the slides, and keep the stream going, usually without getting
-      paid and without a set schedule from week to week.</p>
-    <p>We did two interviews early on, and they pointed us somewhere we didn't really expect. The
-      main problem isn't audio or video breaking. That stuff happens once in a while, but it's not
-      the real issue. The harder part is coordination. Roles change every week, volunteers don't
-      always show up, and most of the knowledge about how everything works lives in one person's
-      head. So we decided to redesign Asana's "Sunday Service" workspace around that.</p>
+    <div class="case__section-label">§ 01 · THE PROBLEM</div>
+    <h2>The people we designed for, and what actually breaks</h2>
+    <p>At a small church, the whole livestream usually runs on a handful of volunteers. They set up the cameras, run the audio, control the slides, and keep the stream going every week&nbsp;&mdash; usually unpaid, and with a different mix of people showing up Sunday to Sunday.</p>
+    <p>Our two early interviews pointed us somewhere we didn't expect. Yeah, the audio and video break sometimes, but that's not really the issue. The actual problem is <strong>coordination</strong>. Roles change every week, people don't always show up, and most of the knowledge about how everything works lives inside one person's head. The week that person isn't there, Sunday is basically at risk. So what we set out to support was keeping the service running no matter who shows up, and that's why we ended up focusing on Asana's &ldquo;Sunday Service&rdquo; workspace instead of the streaming software itself.</p>
   </section>
 
   <!-- ============ 02 WHAT WE TESTED ============ -->
   <section class="case__section">
     <div class="case__section-label">§ 02 · WHAT WE TESTED</div>
     <h2>Four competing directions</h2>
-    <p>Instead of just polishing one idea, we made four high-fidelity screens. Each one was kind of
-      a bet on a different answer to the question, "what does this team actually need?"</p>
+    <p>Instead of polishing one idea to death, we built four high-fidelity screens. Each one was basically a bet on a different answer to the same question: what does this team actually need?</p>
 
     <figure class="shot">
       <img src="assets/cogs127-volunteer-first.png" alt="Asana 'Sunday Service' list reorganized around volunteers, with summary cards for total, confirmed, and missing roles, and volunteers grouped by readiness status." loading="lazy">
-      <figcaption><span class="shot__tag">[ A ] VOLUNTEER-FIRST VIEW</span>The schedule is built around people: who's available, what they're doing, and who still needs to follow up.</figcaption>
+      <figcaption><span class="shot__tag">[ A ] VOLUNTEER-FIRST VIEW</span>Organized around people: who's free, what they're doing, and who you still need to follow up with.</figcaption>
     </figure>
 
     <figure class="shot">
       <img src="assets/cogs127-role-based.png" alt="Asana list organized by service role, with a red banner flagging the unfilled Audio Lead role, split into pre-service, live, and post-service sections." loading="lazy">
-      <figcaption><span class="shot__tag">[ B ] ROLE-BASED VIEW</span>Built around the service roles, so you can see who's covering each one and which roles are still open.</figcaption>
+      <figcaption><span class="shot__tag">[ B ] ROLE-BASED VIEW</span>Organized by role instead, so you can see who's covering each one and what's still open.</figcaption>
     </figure>
 
     <figure class="shot">
       <img src="assets/cogs127-live-issue.png" alt="A live-service tab with a Find Live Replacement panel recommending available volunteers to cover a reported audio issue." loading="lazy">
-      <figcaption><span class="shot__tag">[ C ] LIVE ISSUE PANEL</span>A live tab for reporting a problem during the service and pulling in a replacement.</figcaption>
+      <figcaption><span class="shot__tag">[ C ] LIVE ISSUE PANEL</span>A live tab for flagging a problem mid-service and pulling in a replacement.</figcaption>
     </figure>
 
     <figure class="shot">
       <img src="assets/cogs127-live-command.png" alt="A live dashboard showing service status, active role coverage, an active issues queue, and a team communication feed." loading="lazy">
-      <figcaption><span class="shot__tag">[ D ] LIVE COMMAND CENTER</span>A full live dashboard with the run of show, role coverage, an issue queue, and a team feed.</figcaption>
+      <figcaption><span class="shot__tag">[ D ] LIVE COMMAND CENTER</span>The full version: run of show, role coverage, an issue queue, and a team feed, all in one live dashboard.</figcaption>
     </figure>
   </section>
 
@@ -186,29 +178,22 @@
   <section class="case__section">
     <div class="case__section-label">§ 03 · METHOD</div>
     <h2>Two users, one call each</h2>
-    <p>We tested with two people who actually run tech at a church: one who leads the tech team
-      across a few Sunday services, and one who runs the livestream. Both sessions were on Zoom, one
-      person at a time, where they looked through the screens and talked through what they thought.</p>
-    <h3>One thing to be clear about</h3>
-    <p>These were walkthroughs of static screens, not hands-on usability tests, so I'm not reporting
-      task times or error rates. We showed each screen and talked through it, and the useful part
-      was their reactions and what they said they'd actually use.</p>
+    <p>We tested with two people who actually do this: one who leads the tech team across a few Sunday services, and one who runs the livestream himself. Both sessions were over Zoom, one person at a time. They clicked through the screens and just talked out loud about what they were seeing.</p>
+    <h3>One thing I should be upfront about</h3>
+    <p>These were walkthroughs of static screens, not hands-on usability tests, so I'm not going to pretend I have task times or error rates. We showed each screen and talked it through, and the useful part was really their gut reactions and what they said they'd actually use.</p>
   </section>
 
   <!-- ============ 04 FINDINGS ============ -->
   <section class="case__section">
     <div class="case__section-label">§ 04 · FINDINGS</div>
     <h2>What testing told us</h2>
-    <p>A few reactions were strong enough, and showed up with both people, that they ended up
-      changing the whole direction of the project.</p>
+    <p>A few reactions came up with both people and were strong enough that they ended up changing the whole direction of the project.</p>
 
     <div class="find">
       <div class="find__n">[ 01 ]</div>
       <div>
-        <h3>Just seeing a list of volunteers isn't really the problem.</h3>
-        <p>At a small church, the leader already knows who their volunteers are. What they're
-          actually worried about before Sunday is whether everyone has confirmed and whether any
-          role is still empty. So a screen that just lists volunteers doesn't help much on its own.</p>
+        <h3>A plain list of volunteers wasn't really the problem.</h3>
+        <p>At a small church, the leader already knows who their volunteers are. What they're actually stressing about before Sunday is whether everyone's confirmed and whether any role is still empty. So a screen that just lists people doesn't help them much on its own.</p>
         <span class="find__drove">→ So we dropped the volunteer-first view as our main idea</span>
       </div>
     </div>
@@ -216,11 +201,8 @@
     <div class="find">
       <div class="find__n">[ 02 ]</div>
       <div>
-        <h3>The role-based view matched what they actually ask each week.</h3>
-        <p>Setting it up by role, and making the open roles obvious, lined up with the real
-          question: do we have the right people for this service? Both of them did say that breaking
-          everything down into tiny tasks was too much, since volunteers already know what their
-          job is.</p>
+        <h3>The role-based view matched the question they actually ask every week.</h3>
+        <p>Organizing by role and making the empty roles obvious lined up with the real question they have: do we have the right people for this service? Both of them did say that breaking everything down into tiny tasks was overkill, since volunteers already know what their job is.</p>
         <span class="find__drove">→ Role-based planning became our main direction</span>
       </div>
     </div>
@@ -228,11 +210,8 @@
     <div class="find">
       <div class="find__n">[ 03 ]</div>
       <div>
-        <h3>Our two users didn't agree on skill-matching, so we cut it.</h3>
-        <p>One of them thought a skill-match label was useful for putting the right person in a
-          role. The other thought it was just extra clutter. Instead of picking a side, we swapped
-          it out for a short guide (an SOP) for each role, so the role is easy to learn instead of
-          something the app has to keep track of.</p>
+        <h3>Our two users split on skill-matching, so we dropped it.</h3>
+        <p>One of them thought a skill-match label was useful for slotting the right person into a role. The other one thought it was just clutter. Instead of picking a side, we swapped it for a short guide (basically an SOP) for each role, so the role is easy to learn instead of something the app has to track.</p>
         <span class="find__drove">→ Replaced skill-match with a short guide for each role</span>
       </div>
     </div>
@@ -240,11 +219,8 @@
     <div class="find">
       <div class="find__n">[ 04 ]</div>
       <div>
-        <h3>Nobody needs to see "who's online" once the service starts.</h3>
-        <p>We'd put a lot into showing who was covering each role during the service. Both users
-          said that part wasn't useful, because by the time service starts the team is all together
-          in the back and already knows who showed up. What the live screen should really do is help
-          them catch and fix things that break.</p>
+        <h3>Nobody cares about a "who's online" view once the service starts.</h3>
+        <p>We'd put a ton of work into showing who was covering each role during the service. Both users told us that part wasn't useful&nbsp;&mdash; by the time service starts, the team is all together in the back and already knows who showed up. What the live screen should really do is help them catch and fix the stuff that breaks.</p>
         <span class="find__drove">→ Refocused the live mode on problems, not who's around</span>
       </div>
     </div>
@@ -252,10 +228,8 @@
     <div class="find">
       <div class="find__n">[ 05 ]</div>
       <div>
-        <h3>The livestream itself is a blind spot.</h3>
-        <p>During the service the operator isn't actually watching the YouTube or Facebook stream.
-          The way he finds out it went down is when someone texts him about it. The thing he got
-          most excited about was a feature that notices when the stream cuts out and sends an alert.</p>
+        <h3>The livestream itself is the real blind spot.</h3>
+        <p>During the service, the operator isn't actually watching the YouTube or Facebook feed. The way he finds out it dropped is when someone texts him. The one thing he got really excited about was a feature that catches when the stream cuts out and pings him.</p>
         <span class="find__drove">→ Added livestream monitoring and alerts</span>
       </div>
     </div>
@@ -265,22 +239,17 @@
   <section class="case__section">
     <div class="case__section-label">§ 05 · BEFORE &amp; AFTER</div>
     <h2>Three things that change for the person running Sunday</h2>
-    <p>Each of these comes from something a user told us they do right now, next to the design
-      change it led to.</p>
+    <p>Each of these starts with something a user told us they deal with right now, paired with the design change it led to.</p>
 
     <div class="story-h"><span>STORY 01</span>"Do we have everyone for Sunday?"</div>
     <div class="ba">
       <div class="ba__col ba__col--before">
         <div class="ba__tag">[ BEFORE ]</div>
-        <p>To see who's missing, the tech lead has to swipe through each service time in Planning
-          Center one by one and keep track of it in his head. Gaps show up late, or sometimes not
-          until it's already a problem.</p>
+        <p>To figure out who's missing, the tech lead has to swipe through each service time in Planning Center one by one and hold it all in his head. Gaps show up late, sometimes not until it's already a problem.</p>
       </div>
       <div class="ba__col ba__col--after">
         <div class="ba__tag">[ AFTER ]</div>
-        <p>A readiness dashboard with a tab for each service time. Any role that isn't filled shows
-          up in red as soon as he opens it, and he can check availability in one tap. Coverage is
-          the first thing he sees instead of the last.</p>
+        <p>A readiness dashboard with a tab for each service time. Any unfilled role shows up in red the second he opens it, and he can check availability in one tap. Now coverage is the first thing he sees instead of the last thing he finds out.</p>
       </div>
     </div>
 
@@ -288,14 +257,11 @@
     <div class="ba">
       <div class="ba__col ba__col--before">
         <div class="ba__tag">[ BEFORE ]</div>
-        <p>During the service the operator is focused on the sound in the room and isn't watching
-          the actual broadcast. If the stream drops, the first he hears about it is a viewer texting
-          him, which is usually minutes of dead air later.</p>
+        <p>During the service, the operator is locked in on the sound in the room, not the actual broadcast. If the stream drops, the first he hears about it is a viewer texting him&nbsp;&mdash; usually after minutes of dead air.</p>
       </div>
       <div class="ba__col ba__col--after">
         <div class="ba__tag">[ AFTER ]</div>
-        <p>The live dashboard keeps an eye on the stream and sends an alert the moment something
-          breaks, so the team can react right away instead of hearing about it after the fact.</p>
+        <p>The live dashboard watches the stream and fires an alert the moment something breaks, so the team can jump on it right away instead of finding out after the fact.</p>
       </div>
     </div>
 
@@ -305,14 +271,11 @@
     <div class="ba">
       <div class="ba__col ba__col--before">
         <div class="ba__tag">[ BEFORE ]</div>
-        <p>Problems get fixed in the moment and then forgotten. Nothing gets written down, so the
-          team keeps running into and re-solving the same issues week after week.</p>
+        <p>Problems get fixed in the moment and then forgotten. Nothing gets written down, so the team keeps hitting and re-solving the same handful of issues week after week.</p>
       </div>
       <div class="ba__col ba__col--after">
         <div class="ba__tag">[ AFTER ]</div>
-        <p>Now issues get logged during the service and can be turned into follow-up tasks. After
-          the service the team can look back at them, notice the pattern, and update the role's
-          guide so it doesn't keep happening.</p>
+        <p>Now issues get logged during the service and can be turned into follow-up tasks. Afterward the team can look back, spot the pattern, and update the role's guide so the same thing doesn't keep coming back.</p>
       </div>
     </div>
   </section>
@@ -321,25 +284,22 @@
   <section class="case__section">
     <div class="case__section-label">§ 06 · DIRECTION</div>
     <h2>From four ideas down to one</h2>
-    <p>Testing basically narrowed the four directions down to one clear point of view. The product
-      should help teams answer two questions: do we have the right people confirmed for each
-      service, and can we see and respond fast when something goes wrong? And it shouldn't turn into
-      a heavier task tracker or a big volunteer database.</p>
+    <p>Testing basically collapsed the four directions into one clear point of view. The product should help a team answer two questions: do we have the right people confirmed for each service, and can we see and respond fast when something goes wrong? What it shouldn't become is a heavier task tracker or a big volunteer database nobody asked for.</p>
     <div class="wip-grid">
       <div class="wip">
         <div class="wip__label">[ PART 01 ]</div>
         <div class="wip__title">Sunday Readiness Dashboard</div>
-        <div class="wip__sub">A manager view organized by service time, showing roles, who's assigned, who's confirmed, and what's still missing.</div>
+        <div class="wip__sub">A manager view organized by service time: roles, who's assigned, who's confirmed, and what's still missing.</div>
       </div>
       <div class="wip">
         <div class="wip__label">[ PART 02 ]</div>
         <div class="wip__title">Volunteer Role View</div>
-        <div class="wip__sub">A simple screen showing a volunteer their service time, their role, who they're working with, and the guide for their role.</div>
+        <div class="wip__sub">A simple screen that shows a volunteer their service time, their role, who they're working with, and the guide for that role.</div>
       </div>
       <div class="wip">
         <div class="wip__label">[ PART 03 ]</div>
         <div class="wip__title">Live Issue Diagnosis</div>
-        <div class="wip__sub">A live view that flags problems, suggests how to fix them, logs them, and can turn them into tasks.</div>
+        <div class="wip__sub">A live view that flags problems, suggests a fix, logs them, and can spin them into tasks.</div>
       </div>
     </div>
   </section>
