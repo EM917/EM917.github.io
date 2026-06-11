@@ -50,12 +50,12 @@
       <div class="outcomes__label">tools, one nightly push</div>
     </div>
     <div class="outcomes__cell">
-      <div class="outcomes__num"><span class="u">−60%</span></div>
-      <div class="outcomes__label">token cost per report</div>
+      <div class="outcomes__num">$12<span style="font-size:0.6em">/mo</span></div>
+      <div class="outcomes__label">2GB droplet, self-hosted</div>
     </div>
     <div class="outcomes__cell">
-      <div class="outcomes__num">~10&thinsp;s</div>
-      <div class="outcomes__label">crash auto-recovery</div>
+      <div class="outcomes__num">auto</div>
+      <div class="outcomes__label">restart on crash &amp; boot (systemd)</div>
     </div>
   </div>
 
@@ -119,18 +119,32 @@
 
     <h3>Failure 3: Evening reports kept blowing the context budget.</h3>
     <p>Even with nightly restarts, a single evening report could consume 30K+ tokens because Doudou would web-search 10–15 sources per report. By itself fine. Compounded over the day — not fine.</p>
-    <p><b>Fix:</b> Added explicit constraints in <code>CLAUDE.md</code> capping web searches per report at 3–5, with priority order. Also added compression — Doudou now summarizes long search results before stitching them into the final message. Token usage per report dropped 60%+.</p>
+    <p><b>Fix:</b> Added explicit constraints in <code>CLAUDE.md</code> capping web searches per report at 5, with priority order. Also added compression — Doudou now summarizes long search results before stitching them into the final message. Measured across 35 days of session logs, each nightly report now runs at roughly 8k input+output tokens against that 5-search cap — a number I can pull straight from the <code>.jsonl</code> logs rather than eyeball.</p>
     <p style="margin-top: 24px;">The common thread across all three failures: the AI call was never the problem. The problem was the infrastructure wrapping it.</p>
 
     <h3>The trade-offs I chose.</h3>
     <p>Doudou runs on top of the Claude Code CLI inside a tmux session, with a bash script using <code>send-keys</code> to simulate the keystrokes that launch it. The state — context, preferences, tool definitions — lives in a single <code>CLAUDE.md</code> file loaded into the model on every restart.</p>
-    <p>From a pure architecture standpoint, this is technical debt. A cleaner design would use the Anthropic Python SDK directly with a <code>systemd</code>-managed daemon, SQLite for structured short/long-term state, and a vector DB + RAG for retrieval memory. I know this. I'm not building it — yet.</p>
-    <p>The reason is deliberate: every refactor is a new bug surface. Doudou is in production, by which I mean <em>I use it every single day</em>, and any migration could break the exact loop I'm trying to preserve. What I did instead was invest in making the current hack <em>survive unattended</em>: a <code>healthcheck.sh</code> watchdog runs every 5 minutes and auto-recovers within ~10 seconds of a crash. Production stability beats architectural purity when the architecture is already doing its job.</p>
+    <p>From a pure architecture standpoint, this is technical debt. A cleaner design would use the Anthropic Python SDK directly, SQLite for structured short/long-term state, and a vector DB + RAG for retrieval memory. I know this. I'm not building all of it — yet.</p>
+    <p>The reason is deliberate: every refactor is a new bug surface. Doudou is in production, by which I mean <em>I use it every single day</em>, and any migration could break the exact loop I'm trying to preserve. What I did instead was invest in making the current hack <em>survive unattended</em> — covered in the reliability section below.</p>
     <p>The v2 rewrite is scoped and mapped out. It will ship when the cost of the current system's ugliness finally exceeds the cost of a careful migration. That day isn't today.</p>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 04 · Security &amp; The Iteration Loop</div>
+    <div class="case__section-label">§ 04 · Making It Survive Itself</div>
+    <h2>From "works when I babysit it" to actually self-healing.</h2>
+    <p>For months, "self-healing" was generous. Doudou ran in a hand-started tmux session, and keeping it alive depended on me: every manual restart was a chance to forget the <code>--channels</code> flag that binds the Telegram plugin (drop it and the bot runs but silently answers nothing), and a droplet reboot wiped the tmux session entirely. The watchdog script caught crashes; it did nothing for the two failure modes that actually bit me.</p>
+    <p>So I moved Doudou onto a <code>systemd</code> service. Three things fall out of that, each killing a specific failure I'd actually hit:</p>
+    <ul>
+      <li><b>The launch command is baked into the unit file.</b> <code>--channels plugin:telegram@…</code> can no longer be forgotten — <code>systemctl restart doudou</code> always carries it.</li>
+      <li><b>It starts on boot</b> (<code>enabled</code>) — a droplet reboot brings Doudou back on its own.</li>
+      <li><b>It restarts on crash</b> (<code>Restart=always</code>, 10s) — no SSH, no me.</li>
+    </ul>
+    <p>The non-obvious part was the PTY. Claude Code is interactive; under bare <code>systemd</code> it has no terminal and degrades into one-shot <code>--print</code> mode, crash-looping. Wrapping it in <code>script</code> gives it a PTY, but an un-attached PTY gets suspended (<code>SIGTTOU</code>) and the Telegram plugin's connection dies — service "running," bot silent. The fix that held: have <code>systemd</code> launch a <code>tmux</code> session and run Claude inside it. tmux supplies a persistent, self-attached PTY — the exact environment that works by hand — now started and supervised by the OS. <em>Lesson, again: the gap between "works in my hands" and "works in automation" is almost always the environment, and the environment here was a terminal that had to stay alive.</em></p>
+    <p>The honest framing: this didn't make Doudou's architecture clean. It made the existing hack genuinely unattended, which is the property that was missing. Token expiry still needs a manual re-login every few weeks — that's an auth mechanism, not something a service can fix — but nothing in the start/stop/reboot/crash path needs me anymore.</p>
+  </section>
+
+  <section class="case__section">
+    <div class="case__section-label">§ 05 · Security &amp; The Iteration Loop</div>
     <h2>OS-level enforcement over application-level trust.</h2>
     <p>There's an obvious tension in this project. § 02 criticized OpenClaw for giving agents system-level shell access, and yet Doudou has <code>web_search</code> enabled and originally ran in <code>--dangerously-skip-permissions</code> mode with write access to its own <code>CLAUDE.md</code>. A malicious news article could, in principle, instruct Doudou to rewrite its own instructions — implanting persistent behavior changes the next time it restarts.</p>
     <p>To solve this, I rely on Linux file permissions, not LLM guardrails:</p>
@@ -149,7 +163,7 @@ chmod 444 /home/doudu/CLAUDE.md</code></pre>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 05 · What I Learned</div>
+    <div class="case__section-label">§ 06 · What I Learned</div>
     <h2>Owning the full stack taught me what frameworks hide.</h2>
     <p><b>The hard parts weren't the AI calls.</b> They were the boring infrastructure: tmux session persistence, cron job timing, restart logic, environment variables, log rotation. The actual Claude API integration was maybe 5% of the effort.</p>
     <p><b>Production debugging is a different skill.</b> Reading a stack trace from your laptop is one thing. SSH-ing into a remote machine at 11pm because your bot stopped responding, attaching to tmux, and reasoning about whether the issue is the network, the model, the script, or your own logic — that's a different muscle. I built it on Doudou.</p>
@@ -158,7 +172,7 @@ chmod 444 /home/doudu/CLAUDE.md</code></pre>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 06 · What's Next</div>
+    <div class="case__section-label">§ 07 · What's Next</div>
     <h2>Where Doudou is going.</h2>
     <p>Open-ended. Some things I'm considering:</p>
     <ul>
