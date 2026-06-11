@@ -4,205 +4,194 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YiLong Mei — AI Product Engineer</title>
-<meta name="description" content="YiLong (Elon) Mei — AI Product Engineer. UCSD Cognitive Science '26. Building Doudou, a Telegram AI assistant.">
+<meta name="description" content="YiLong (Elon) Mei — AI Product Engineer. UCSD Cognitive Science '26. Building Doudou, a Telegram AI assistant running in production.">
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="nav">
-  <div class="nav__brand">YILONG&nbsp;MEI</div>
-  <nav class="nav__links">
-    <a href="#work">Work</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header class="mast">
+  <div class="mast__row">
+    <a href="index.html" class="mast__brand">YiLong&nbsp;Mei</a>
+    <div class="mast__date" id="dateline">San Diego, CA</div>
+    <nav class="mast__nav">
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/EM917" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+    </nav>
+  </div>
+  <div class="mast__rule"></div>
 </header>
 
-<section class="hero">
-  <div class="hero__status"><span class="dot"></span>OPEN TO SUMMER 2026 INTERNSHIPS &amp; NEW-GRAD ROLES</div>
-  <div class="hero__meta">DRAWING NO. 001 — REV. 2026.04</div>
-  <h1 class="hero__title">
-    AI Product Engineer<br>
-    <em>building small, real AI tools.</em>
-  </h1>
-  <div class="hero__divider">
-    <span>SCALE 1:1</span>
-    <span>UCSD&nbsp;'26</span>
-    <span>SAN DIEGO, CA</span>
-    <span>STATUS · OPEN</span>
-  </div>
-  <p class="hero__sub">
-    Cognitive Science (Design &amp; Interaction) at UC&nbsp;San&nbsp;Diego.<br>
-    Currently building <b>Doudou</b> — a Telegram AI assistant I use every day.
-  </p>
-  <a href="#work" class="hero__cta">SEE THE WORK →</a>
-</section>
+<main class="wrap">
 
-<section class="about">
-  <div class="section__label">§ 01 · ABOUT</div>
-  <h2 class="about__title">I build AI products.</h2>
-  <p class="about__sub">UCSD Cognitive Science '26 · building Doudou — a personal AI assistant · open to AI Product Engineer roles</p>
-</section>
-
-<section class="stack">
-  <div class="section__label">§ 02 · STACK</div>
-  <div class="stack__grid">
-    <div class="stack__col">
-      <div class="stack__col-label">[ BUILD ]</div>
-      <div class="stack__col-items">Python · Claude API · OpenAI API · REST APIs · pandas · scikit-learn</div>
-    </div>
-    <div class="stack__col">
-      <div class="stack__col-label">[ DESIGN ]</div>
-      <div class="stack__col-items">Figma · HTML / CSS / JS · prototyping</div>
-    </div>
-    <div class="stack__col">
-      <div class="stack__col-label">[ DEPLOY ]</div>
-      <div class="stack__col-items">Linux (Ubuntu) · DigitalOcean · tmux / cron · Git</div>
+<section class="lead">
+  <div class="lead__text">
+    <p class="kicker"><span class="dot"></span>Open to Summer 2026 internships &amp; new-grad roles</p>
+    <h1>AI Product Engineer. Ships real AI tools — and keeps them running.</h1>
+    <p class="dek">
+      Cognitive Science at UC&nbsp;San&nbsp;Diego, class of 2026.
+      The session replaying here is <b>Doudou</b> — a Telegram assistant I built,
+      live in production for <span data-uptime>192</span>&nbsp;days. It sent that report on its own — unprompted.
+    </p>
+    <div class="lead__cta">
+      <a href="#work" class="btn btn--solid">See the work</a>
+      <a href="mailto:william.mei0917@gmail.com" class="btn btn--ghost">Get in touch</a>
     </div>
   </div>
-</section>
 
-<section class="work" id="work">
-  <div class="section__label">§ 03 · SELECTED WORK</div>
-
-  <article class="project">
-    <header class="project__header">
-      <div class="project__num">[ 01 ]</div>
-      <div class="project__head">
-        <h3 class="project__title">Doudou</h3>
-        <p class="project__sub">A Telegram AI assistant that pushes what I need, before I ask</p>
+  <figure class="lead__artifact">
+    <div class="replay" id="replay" aria-label="Replay of a real Doudou evening report">
+      <div class="replay__bar">
+        <div class="replay__avatar">🐾</div>
+        <div class="replay__name">Doudou <span>bot</span></div>
+        <div class="replay__live">LIVE</div>
       </div>
-      <div class="project__year">2025 — now</div>
-    </header>
+      <div class="replay__feed" id="replay-feed">
+        <div class="replay__stamp">Recorded session · April 11, 2026 · 21:58</div>
 
-    <div class="phones">
-      <figure class="phone">
-        <span class="phone__badge"><span class="phone__badge-dot"></span>LIVE</span>
-        <img src="assets/doudou-evening.jpg" alt="Doudou's evening report: market close, watchlist, today's recap, AI news, next week preview, and upcoming reminders." loading="lazy" />
-      </figure>
-      <p class="phones__caption">
-        A real evening report from Doudou — five tools (markets, news, recap, week preview, reminders) coordinating into one message, every night.
+        <div class="msg" data-step>
+          <p>🌙 <b>Good Night Elon! Daily Recap</b><br>📆 April 11, 2026 (Saturday)</p>
+        </div>
+
+        <div class="msg" data-step>
+          <p>📊 <b>Latest Close (Fri 4/10)</b></p>
+          <hr class="m-rule">
+          <p class="m-mono">S&amp;P 500&nbsp;&nbsp;6,816.89&nbsp;&nbsp;<span class="m-down">▼ −0.11%</span><br>
+          Nasdaq&nbsp;&nbsp;22,902.89&nbsp;&nbsp;<span class="m-up">▲ +0.35%</span><br>
+          Dow Jones&nbsp;&nbsp;47,917&nbsp;&nbsp;<span class="m-down">▼ −0.56%</span></p>
+          <hr class="m-rule">
+          <p class="m-mono">₿ BTC $72,965 <span class="m-up">▲ +0.10%</span> | Ξ ETH $2,285 <span class="m-up">▲ +1.90%</span></p>
+          <p>📌 Weekly recap: S&amp;P +3%, Nasdaq +4%, rally driven by US-Iran ceasefire</p>
+        </div>
+
+        <div class="msg" data-step>
+          <p>📰 <b>Today's Recap</b></p>
+          <p>– 🤖 Agentic AI becoming the next frontier — Fortune 500 firms deploying at scale<br>
+          – 💰 OpenAI hits $25B annualized revenue, Anthropic nearing $19B — AI monetization exploding</p>
+        </div>
+
+        <div class="msg" data-step>
+          <p>🗓 <b>Upcoming Reminders</b></p>
+          <hr class="m-rule">
+          <p>⚠️ Register for Summer Course! → 2 days left (4/14 Mon 8:20 AM)</p>
+          <p>🌙 Doudou says: Enjoy the weekend! Earnings season kicks off next week. Don't forget to register for summer courses before Monday! 💤</p>
+        </div>
+      </div>
+    </div>
+    <figcaption class="replay__caption">
+      A real evening report, replayed: markets, news, recap and reminders,
+      coordinated into one message, every night, on schedule.
+    </figcaption>
+  </figure>
+</section>
+
+</main>
+
+<section class="board">
+  <div class="board__row">
+    <div class="board__pulse"><svg class="pulse" viewBox="0 0 72 18" aria-hidden="true"><path class="pulse__base" d="M1 11 H24 L30 4 L37 16 L43 11 H71"/><path class="pulse__sweep" d="M1 11 H24 L30 4 L37 16 L43 11 H71" pathLength="100"/></svg></div>
+    <div class="board__cell"><b data-uptime>192</b> days in production</div>
+    <div class="board__cell"><b>5</b> tools, one nightly push</div>
+    <div class="board__cell"><b>−60%</b> token cost per report</div>
+    <div class="board__cell"><b>$12/mo</b> self-hosted infra</div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<section class="index" id="work">
+  <div class="index__head">
+    <h2 class="index__title">Selected work</h2>
+    <div class="index__count">2025 — 2026</div>
+  </div>
+
+  <a class="row row--live" href="doudou.html">
+    <div class="row__num">01</div>
+    <div>
+      <h3 class="row__title">Doudou — an AI assistant I actually use every day</h3>
+      <p class="row__dek">Telegram + Claude API, self-hosted on a DigitalOcean droplet. Five tools composing into one nightly push. Three documented production failures, fixed; OS-level security model; full technical writeup.</p>
+    </div>
+    <figure class="row__thumb"><img src="assets/thumb-doudou.jpg" alt=""></figure>
+    <div class="row__meta"><span class="live-dot"></span>Live · day <span data-uptime>192</span></div>
+    <div class="row__arrow">→</div>
+  </a>
+
+  <a class="row" href="https://github.com/EM917/COGS108-Fall-2025-final-project" target="_blank" rel="noopener">
+    <div class="row__num">02</div>
+    <div>
+      <h3 class="row__title">Power Outage Duration Analysis</h3>
+      <p class="row__dek">Do poorer or more rural U.S. states endure longer outages? 1,500-row dataset; OLS vs PCA vs Random Forest (R²&nbsp;=&nbsp;0.46). Finding: one well-derived feature beat every model swap. COGS&nbsp;108, team of five.</p>
+    </div>
+    <div class="row__meta">Fall 2025 · GitHub ↗</div>
+    <div class="row__arrow">→</div>
+  </a>
+
+  <a class="row" href="cogs127.html">
+    <div class="row__num">03</div>
+    <div>
+      <h3 class="row__title">Sunday Service — Asana, redesigned for church tech volunteers</h3>
+      <p class="row__dek">8-week team project. Built four competing high-fidelity directions, put them in front of the people who actually run Sunday livestreams, and learned which of our favorite features they didn't care about.</p>
+    </div>
+    <figure class="row__thumb"><img src="assets/thumb-cogs127.png" alt=""></figure>
+    <div class="row__meta">Spring 2026 · Case study</div>
+    <div class="row__arrow">→</div>
+  </a>
+
+  <div class="subrows">
+    <div class="subrows__label">In progress — case studies land June 2026</div>
+    <div class="subrow">
+      <div class="subrow__num">04</div>
+      <div class="subrow__course">COGS 102C</div>
+      <div class="subrow__title"><b>Cognitive Design</b>Applying cognitive science principles to interface design.</div>
+      <div class="subrow__meta">Spring 2026</div>
+    </div>
+    <div class="subrow">
+      <div class="subrow__num">05</div>
+      <div class="subrow__course">DSGN 100</div>
+      <div class="subrow__title"><b>Prototyping</b>Iterative prototyping foundations.</div>
+      <div class="subrow__meta">Spring 2026</div>
+    </div>
+  </div>
+</section>
+
+<section class="colophon" id="contact">
+  <div class="colophon__grid">
+    <div>
+      <h2>I build AI products — and I'm my own first user.</h2>
+      <p class="colophon__bio">
+        I'm a heavy user of every frontier LLM, and the gap I kept hitting wasn't intelligence — it was
+        initiative. So I built the assistant I wanted, run it on a server I administer, and fix whatever
+        annoys me the same day it annoys me. I'm looking for AI Product Engineer roles where shipping
+        and operating the thing are the same job. The fastest way to reach me is email — I reply within a day.
       </p>
     </div>
-
-    <div class="project__body">
-      <div class="project__block">
-        <div class="block__label">[ PROBLEM ]</div>
-        <p>Every frontier LLM I paid for — ChatGPT Plus, Claude Max, Gemini Pro — was reactive. It waited for me to open a chat, type a question, and parse the answer. I wanted one that pushed the right information to me at the right time instead.</p>
+    <div class="colophon__contact">
+      <p class="colophon__label">Contact</p>
+      <a href="mailto:william.mei0917@gmail.com" class="btn btn--solid">william.mei0917@gmail.com</a>
+      <div class="colophon__links">
+        <a href="https://github.com/EM917" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+        <a href="https://linkedin.com/in/yilong-elon-mei-953333260" target="_blank" rel="noopener">LinkedIn&nbsp;↗</a>
       </div>
-      <div class="project__block">
-        <div class="block__label">[ DECISION ]</div>
-        <p>Built on Telegram for its clean Bot API, using the Claude API. Self-hosted on a DigitalOcean Ubuntu droplet I administer myself. Five tools: market report, news brief, daily recap, week preview, reminders.</p>
-      </div>
-      <div class="project__block">
-        <div class="block__label">[ LEARNED ]</div>
-        <p>Owning the full stack — server, cron jobs, context window management, prompt iteration — taught me more than any course. The hard parts weren't the AI calls, they were the boring infrastructure underneath.</p>
-      </div>
+      <p class="colophon__label">Stack</p>
+      <p class="colophon__stack">
+        <b>Build</b> — Python · Claude API · OpenAI API · REST APIs · pandas · scikit-learn<br>
+        <b>Design</b> — Figma · HTML / CSS / JS · prototyping<br>
+        <b>Deploy</b> — Linux (Ubuntu) · DigitalOcean · tmux / cron · Git
+      </p>
     </div>
-
-    <div class="project__links">
-      <a href="doudou.html" class="link">
-        <span>Read the technical writeup</span>
-        <span class="link__arrow">→</span>
-      </a>
-      <a href="https://github.com/EM917/doudou" target="_blank" rel="noopener" class="link" style="margin-left:24px;">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-        <span>github.com/EM917/doudou</span>
-        <span class="link__arrow">→</span>
-      </a>
-    </div>
-  </article>
-
-  <article class="project">
-    <header class="project__header">
-      <div class="project__num">[ 02 ]</div>
-      <div class="project__head">
-        <h3 class="project__title">Power Outage Duration Analysis</h3>
-        <p class="project__sub">COGS 108 · Group project (5 members) · State-level analysis, 2000–2016</p>
-      </div>
-      <div class="project__year">Fall 2025</div>
-    </header>
-    <div class="project__body">
-      <div class="project__block">
-        <div class="block__label">[ PROBLEM ]</div>
-        <p>Test whether U.S. states with lower per-capita GDP or higher rural population share experience longer major power outages, after controlling for event cause and weather severity.</p>
-      </div>
-      <div class="project__block">
-        <div class="block__label">[ DECISION ]</div>
-        <p>Cleaned a 1500+ row dataset, ran exploratory analysis, then compared OLS regression, PCA, and Random Forest models. Final Random Forest: R²&nbsp;=&nbsp;0.46, with feature importance documented for the top predictors.</p>
-      </div>
-      <div class="project__block">
-        <div class="block__label">[ LEARNED ]</div>
-        <p>Feature engineering moved the needle more than model choice. A single well-derived feature beat the lift from switching model families — a useful reminder that domain framing usually wins over algorithmic complexity.</p>
-      </div>
-    </div>
-    <div class="project__links">
-      <a href="https://github.com/EM917/COGS108-Fall-2025-final-project" target="_blank" rel="noopener" class="link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-        <span>github.com/EM917/COGS108-Fall-2025-final-project</span>
-        <span class="link__arrow">→</span>
-      </a>
-    </div>
-  </article>
-
-  <article class="project">
-    <header class="project__header">
-      <div class="project__num">[ 03 ]</div>
-      <div class="project__head">
-        <h3 class="project__title">In Progress</h3>
-        <p class="project__sub">Spring 2026 coursework — full case studies available June 2026</p>
-      </div>
-      <div class="project__year">Spring 2026</div>
-    </header>
-    <div class="wip-grid">
-      <div class="wip">
-        <div class="wip__label">[ COGS 127 ]</div>
-        <div class="wip__title">Data-Driven UX</div>
-        <div class="wip__sub">8-week team project redesigning a widely-used app for professional users.</div>
-        <a href="cogs127.html" class="link" style="font-size: 12px; margin-top: 10px; display: inline-block;">
-          <span>Read the case study</span>
-          <span style="margin-left: 6px;">→</span>
-        </a>
-      </div>
-      <div class="wip">
-        <div class="wip__label">[ COGS 102C ]</div>
-        <div class="wip__title">Cognitive Design</div>
-        <div class="wip__sub">Applying cognitive science principles to interface design.</div>
-      </div>
-      <div class="wip">
-        <div class="wip__label">[ DSGN 100 ]</div>
-        <div class="wip__title">Prototyping</div>
-        <div class="wip__sub">Iterative prototyping foundations.</div>
-      </div>
-    </div>
-  </article>
-</section>
-
-<section class="contact" id="contact">
-  <div class="section__label">§ 04 · CONTACT</div>
-  <div class="contact__icons">
-    <a href="https://github.com/EM917" target="_blank" rel="noopener" class="contact__icon" aria-label="GitHub">
-      <svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-      <span>GITHUB</span>
-    </a>
-    <a href="https://linkedin.com/in/yilong-elon-mei-953333260" target="_blank" rel="noopener" class="contact__icon" aria-label="LinkedIn">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-      <span>LINKEDIN</span>
-    </a>
-    <a href="mailto:william.mei0917@gmail.com" class="contact__icon" aria-label="Email">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg>
-      <span>EMAIL</span>
-    </a>
   </div>
 </section>
+
+</main>
 
 <footer class="footer">
   <div class="footer__line">
-    <span>© 2026 YILONG MEI</span>
-    <span>SAN DIEGO · SOON LOS ANGELES</span>
-    <span>LAST UPDATED 2026.05</span>
+    <span>© 2026 YiLong Mei</span>
+    <span>San Diego, CA → Los Angeles soon</span>
+    <span>Hand-built static site · Set in Source Serif 4 &amp; Instrument Sans</span>
   </div>
 </footer>
 
