@@ -8,49 +8,74 @@
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="nav">
-  <a href="index.html" class="nav__brand">YILONG&nbsp;MEI</a>
-  <nav class="nav__links">
-    <a href="index.html#work">Work</a>
-    <a href="index.html#contact">Contact</a>
-  </nav>
+<header class="mast">
+  <div class="mast__row">
+    <a href="index.html" class="mast__brand">YiLong&nbsp;Mei</a>
+    <div class="mast__date" id="dateline">San Diego, CA</div>
+    <nav class="mast__nav">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="https://github.com/EM917" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+    </nav>
+  </div>
+  <div class="mast__rule"></div>
 </header>
 
 <article class="case">
-  <div class="case__meta">DRAWING NO. 001 — DOUDOU — REV. 2026.04</div>
-  <h1 class="case__title">Doudou: <em>building an AI assistant<br>I actually use every day.</em></h1>
+  <div class="case__meta">Case Study · 01 · Doudou</div>
+  <h1 class="case__title">Doudou: building an AI assistant<br>I actually use every day.</h1>
 
   <div class="case__divider">
-    <span>STATUS · LIVE</span>
-    <span>UPTIME · <span id="uptime-days">142</span> DAYS</span>
-    <span>STACK · TELEGRAM + CLAUDE API</span>
-    <span>HOST · DIGITALOCEAN UBUNTU</span>
+    <span>Status · Live</span>
+    <span>Uptime · <span id="uptime-days" data-uptime>180</span> days</span>
+    <span>Stack · Telegram + Claude API</span>
+    <span>Host · DigitalOcean Ubuntu</span>
   </div>
 
   <div class="case__lede">
     Doudou is a Telegram bot I built and have been using daily since late 2025. It knows my courses, my deadlines, my finances, and the news I follow. This is the writeup of how it works, what broke along the way, and what I learned from owning the full stack.
   </div>
 
+  <div class="outcomes">
+    <div class="outcomes__cell">
+      <div class="outcomes__num"><span data-uptime>192</span></div>
+      <div class="outcomes__label">days in production</div>
+    </div>
+    <div class="outcomes__cell">
+      <div class="outcomes__num">5</div>
+      <div class="outcomes__label">tools, one nightly push</div>
+    </div>
+    <div class="outcomes__cell">
+      <div class="outcomes__num"><span class="u">−60%</span></div>
+      <div class="outcomes__label">token cost per report</div>
+    </div>
+    <div class="outcomes__cell">
+      <div class="outcomes__num">~10&thinsp;s</div>
+      <div class="outcomes__label">crash auto-recovery</div>
+    </div>
+  </div>
+
+
   <section class="case__section">
-    <div class="case__section-label">§ 01 · BACKGROUND</div>
+    <div class="case__section-label">§ 01 · Background</div>
     <h2>Why build my own AI assistant when ChatGPT exists?</h2>
     <p>I'm a heavy user of all three frontier LLMs — ChatGPT Plus, Claude (started on Pro, upgraded to Max once it pulled ahead on coding and general reasoning), and Gemini Pro — and I kept hitting the same wall: <b>LLMs only speak when spoken to</b>. I'd finish a workout and want a market brief, or be walking to class and remember I needed to set a reminder for a deadline — but opening a chat, typing the question, and parsing the answer all required me to stop what I was doing.</p>
     <p>The bottleneck wasn't intelligence or memory (both have been solved across all three). It was <em>initiative</em>. I wanted an assistant that could push the right information to me at the right time — a morning brief before I'm awake, a market recap when the bell rings, a deadline reminder two days out — without me having to ask.</p>
     <p>So I built Doudou on top of Claude. The choice was deliberate: after using all three daily, Claude had the strongest long-context reasoning for the kind of multi-step, tool-coordinating prompts Doudou needed, and Claude Code made the server side work trivially simple — I could iterate on the bot itself by talking to it in natural language. ChatGPT's API has more third-party wrappers, Gemini is cheapest, but neither fit the "AI that rewrites its own instructions" pattern I wanted.</p>
-    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">About the name.</h3>
+    <h3>About the name.</h3>
     <p>Doudou was my dog. Wherever I went, he went — not because I called him, just because that was the only place he wanted to be. He went missing a few years ago. I never found him. I named this after him because building it, some nights, feels like he's still in the room. Some goodbyes you don't get to have.</p>
     <figure style="margin: 32px 0; text-align: center;">
-      <img src="assets/doudou-dog.jpg" alt="Doudou, asleep on a brown leather sofa" style="max-width: 420px; width: 100%; height: auto; border-radius: 2px; opacity: 0.88; filter: saturate(0.85);">
-      <figcaption style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-faint); letter-spacing: 0.18em; margin-top: 10px;">DOUDOU · THE ORIGINAL</figcaption>
+      <img src="assets/doudou-dog.jpg" alt="Doudou, asleep on a brown leather sofa" style="max-width: 420px; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule);">
+      <figcaption>Doudou · The Original</figcaption>
     </figure>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 02 · ARCHITECTURE DECISIONS</div>
+    <div class="case__section-label">§ 02 · Architecture Decisions</div>
     <h2>Why Telegram, why self-hosted, why these specific tools.</h2>
     <p>Three decisions shaped Doudou's architecture, each one a trade-off I can defend.</p>
     <p><b>Telegram over iMessage, Signal, or Discord.</b> I compared the four before building. The decision came down to two things: the Bot API is the cleanest of the four (no OAuth flow, no business verification), and the deployment story is a single long-lived script against a well-documented HTTPS endpoint. That combination of "low friction to ship" and "stable target to debug against" mattered more to me than any specific social habit with the app.</p>
@@ -65,8 +90,12 @@
       <li><b>Week preview</b> — earnings calendar, macro events, what to watch</li>
       <li><b>Reminders</b> — course deadlines, upcoming events, anything I throw at it in natural language</li>
     </ul>
+    <figure style="margin: 32px 0; text-align: center;">
+      <img src="assets/doudou-evening.jpg" alt="Doudou's actual evening report in Telegram: market close, watchlist, weekly recap, AI news, next-week preview, and reminders." loading="lazy" style="max-width: 380px; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule);">
+      <figcaption>The nightly push, as delivered — five tools in one message</figcaption>
+    </figure>
 
-    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">Why not OpenClaw.</h3>
+    <h3>Why not OpenClaw.</h3>
     <p>Before building Doudou, I evaluated OpenClaw — the most popular open-source self-hosted AI agent in 2026, with a similar Telegram-first interface. I briefly deployed it on the same DigitalOcean droplet, then stopped. The reasons were security-shaped:</p>
     <ul>
       <li>OpenClaw agents get <b>system-level shell access</b> by default — any prompt injection becomes arbitrary code execution on the host</li>
@@ -77,7 +106,7 @@
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 03 · WHAT BROKE</div>
+    <div class="case__section-label">§ 03 · What Broke</div>
     <h2>Three real failures and how I fixed them.</h2>
 
     <h3>Failure 1: Context window overflow.</h3>
@@ -93,7 +122,7 @@
     <p><b>Fix:</b> Added explicit constraints in <code>CLAUDE.md</code> capping web searches per report at 3–5, with priority order. Also added compression — Doudou now summarizes long search results before stitching them into the final message. Token usage per report dropped 60%+.</p>
     <p style="margin-top: 24px;">The common thread across all three failures: the AI call was never the problem. The problem was the infrastructure wrapping it.</p>
 
-    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">The trade-offs I chose.</h3>
+    <h3>The trade-offs I chose.</h3>
     <p>Doudou runs on top of the Claude Code CLI inside a tmux session, with a bash script using <code>send-keys</code> to simulate the keystrokes that launch it. The state — context, preferences, tool definitions — lives in a single <code>CLAUDE.md</code> file loaded into the model on every restart.</p>
     <p>From a pure architecture standpoint, this is technical debt. A cleaner design would use the Anthropic Python SDK directly with a <code>systemd</code>-managed daemon, SQLite for structured short/long-term state, and a vector DB + RAG for retrieval memory. I know this. I'm not building it — yet.</p>
     <p>The reason is deliberate: every refactor is a new bug surface. Doudou is in production, by which I mean <em>I use it every single day</em>, and any migration could break the exact loop I'm trying to preserve. What I did instead was invest in making the current hack <em>survive unattended</em>: a <code>healthcheck.sh</code> watchdog runs every 5 minutes and auto-recovers within ~10 seconds of a crash. Production stability beats architectural purity when the architecture is already doing its job.</p>
@@ -101,7 +130,7 @@
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 04 · SECURITY & THE ITERATION LOOP</div>
+    <div class="case__section-label">§ 04 · Security &amp; The Iteration Loop</div>
     <h2>OS-level enforcement over application-level trust.</h2>
     <p>There's an obvious tension in this project. § 02 criticized OpenClaw for giving agents system-level shell access, and yet Doudou has <code>web_search</code> enabled and originally ran in <code>--dangerously-skip-permissions</code> mode with write access to its own <code>CLAUDE.md</code>. A malicious news article could, in principle, instruct Doudou to rewrite its own instructions — implanting persistent behavior changes the next time it restarts.</p>
     <p>To solve this, I rely on Linux file permissions, not LLM guardrails:</p>
@@ -109,7 +138,7 @@
 chmod 444 /home/doudu/CLAUDE.md</code></pre>
     <p>The Doudou process runs as the unprivileged user <code>doudu</code>. It <em>literally cannot</em> rewrite its own brain — the OS kernel denies the syscall before the model ever gets to reason about permission. This is a Zero-Trust posture: don't trust the application's logical boundaries; trust the system's physical boundaries.</p>
 
-    <h3 style="font-family: var(--font-serif); font-style: italic; margin-top: 32px;">The iteration loop, reshaped.</h3>
+    <h3>The iteration loop, reshaped.</h3>
     <p>Self-iteration still works. It just routes through a human:</p>
     <ul>
       <li>If I send <b>"evolve"</b>, Doudou reviews recent conversations and proposes a diff to <code>CLAUDE.md</code>.</li>
@@ -120,7 +149,7 @@ chmod 444 /home/doudu/CLAUDE.md</code></pre>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 05 · WHAT I LEARNED</div>
+    <div class="case__section-label">§ 05 · What I Learned</div>
     <h2>Owning the full stack taught me what frameworks hide.</h2>
     <p><b>The hard parts weren't the AI calls.</b> They were the boring infrastructure: tmux session persistence, cron job timing, restart logic, environment variables, log rotation. The actual Claude API integration was maybe 5% of the effort.</p>
     <p><b>Production debugging is a different skill.</b> Reading a stack trace from your laptop is one thing. SSH-ing into a remote machine at 11pm because your bot stopped responding, attaching to tmux, and reasoning about whether the issue is the network, the model, the script, or your own logic — that's a different muscle. I built it on Doudou.</p>
@@ -129,7 +158,7 @@ chmod 444 /home/doudu/CLAUDE.md</code></pre>
   </section>
 
   <section class="case__section">
-    <div class="case__section-label">§ 06 · WHAT'S NEXT</div>
+    <div class="case__section-label">§ 06 · What's Next</div>
     <h2>Where Doudou is going.</h2>
     <p>Open-ended. Some things I'm considering:</p>
     <ul>
@@ -152,9 +181,9 @@ chmod 444 /home/doudu/CLAUDE.md</code></pre>
 
 <footer class="footer">
   <div class="footer__line">
-    <span>© 2026 YILONG MEI</span>
-    <span>SAN DIEGO · SOON LOS ANGELES</span>
-    <span>LAST UPDATED 2026.04</span>
+    <span>© 2026 YiLong Mei</span>
+    <span>San Diego, CA → Los Angeles soon</span>
+    <span>Hand-built static site · Set in Source Serif 4 &amp; Instrument Sans</span>
   </div>
 </footer>
 

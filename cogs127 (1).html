@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COGS 127 Case Study — YiLong Mei</title>
+<meta name="description" content="UCSD COGS 127 (Spring 2026) — redesigning Asana for small-church tech teams. User testing &amp; before-and-after case study.">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
+<style>
+  /* --- page-local components, built on the site's design tokens --- */
+  .find { display: grid; grid-template-columns: 44px 1fr; gap: 18px; padding: 26px 0; }
+  .find + .find { border-top: 1px solid var(--rule); }
+  .find__n {
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--fg-mute); letter-spacing: 0.06em; padding-top: 6px;
+  }
+  .find h3 {
+    font-family: var(--font-serif); font-weight: 600;
+    font-size: 20px; line-height: 1.3; color: var(--fg); margin: 0 0 8px 0;
+  }
+  .find p {
+    font-family: var(--font-serif); font-size: 18px; line-height: 1.65;
+    color: var(--fg-mid); margin: 0;
+  }
+  .find__drove {
+    display: inline-block; margin-top: 14px;
+    font-family: var(--font-sans); font-size: 12.5px; font-weight: 500;
+    color: var(--accent); background: var(--accent-tint);
+    border: 1px solid var(--accent-soft);
+    border-radius: 999px; padding: 5px 13px;
+  }
+
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  .ba__col { padding: 22px 24px; border-radius: var(--radius-sm); }
+  .ba__col--before { background: var(--bg-soft); border: 1px solid var(--rule); }
+  .ba__col--after  { background: var(--bg-card); border: 1px solid var(--accent-soft); }
+  .ba__tag {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .ba__col--before .ba__tag { color: var(--fg-mute); }
+  .ba__col--after  .ba__tag { color: var(--accent); }
+  .ba__col p {
+    font-family: var(--font-serif); font-size: 17.5px; line-height: 1.65; margin: 0;
+  }
+  .ba__col--before p { color: var(--fg-mute); }
+  .ba__col--after  p { color: var(--fg-mid); }
+
+  .story-h {
+    font-family: var(--font-serif); font-weight: 500; font-style: italic;
+    font-size: 21px; color: var(--fg); margin: 40px 0 6px 0;
+  }
+  .story-h:first-of-type { margin-top: 16px; }
+  .story-h span {
+    font-family: var(--font-mono); font-style: normal; font-weight: 500;
+    font-size: 10.5px; color: var(--fg-mute); letter-spacing: 0.16em; margin-right: 10px;
+  }
+
+  .q {
+    font-family: var(--font-serif); font-style: italic; font-size: 21px;
+    line-height: 1.5; color: var(--fg-mid);
+    border-left: 2px solid var(--accent); padding-left: 20px;
+    margin: 18px 0;
+  }
+  .q cite {
+    display: block; font-family: var(--font-mono); font-style: normal;
+    font-size: 10.5px; color: var(--fg-mute); letter-spacing: 0.14em; margin-top: 10px;
+  }
+
+  .shot {
+    margin: 24px 0 0 0;
+    border: 1px solid var(--rule); border-radius: var(--radius);
+    overflow: hidden; background: var(--bg-card);
+    box-shadow: 0 1px 2px rgba(25, 25, 23, 0.04);
+  }
+  .shot img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--rule); }
+  .shot figcaption {
+    padding: 14px 18px;
+    font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+    color: var(--fg-mute); letter-spacing: 0; text-transform: none; text-align: left;
+    margin-top: 0;
+  }
+  .shot__tag {
+    display: block; margin-bottom: 4px;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+    color: var(--fg-mute); letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  @media (max-width: 720px) {
+    .ba { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="mast__row">
+    <a href="index.html" class="mast__brand">YiLong&nbsp;Mei</a>
+    <div class="mast__date" id="dateline">San Diego, CA</div>
+    <nav class="mast__nav">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="https://github.com/EM917" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+    </nav>
+  </div>
+  <div class="mast__rule"></div>
+</header>
+
+<article class="case">
+  <div class="case__meta">Case Study · 02 · COGS 127</div>
+  <h1 class="case__title">Coordinating the volunteers who run<br>church livestreams.</h1>
+  <p class="case__subtitle">An 8-week team project redesigning Asana&rsquo;s Sunday-service workflow for small-church tech volunteers.</p>
+
+  <div class="case__divider">
+    <span>Status · User testing</span>
+    <span>Course · COGS 127 · SP'26</span>
+    <span>Instructor · Philip Guo</span>
+    <span>Team · 4</span>
+  </div>
+
+  <div class="case__lede">
+    Going in, we were pretty sure we knew what these teams needed, so we built four high-fidelity concepts to prove it. Then we put them in front of two people who actually run tech at a church. Turns out the features we were proudest of were the ones they cared about least&nbsp;&mdash; and that one round of testing is what steered the whole project.
+  </div>
+
+  <!-- ============ 01 THE PROBLEM ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 01 · The Problem</div>
+    <h2>The people we designed for, and what actually breaks</h2>
+    <p>At a small church, the whole livestream usually runs on a handful of volunteers. They set up the cameras, run the audio, control the slides, and keep the stream going every week&nbsp;&mdash; usually unpaid, and with a different mix of people showing up Sunday to Sunday.</p>
+    <p>Our two early interviews pointed us somewhere we didn't expect. Yeah, the audio and video break sometimes, but that's not really the issue. The actual problem is <strong>coordination</strong>. Roles change every week, people don't always show up, and most of the knowledge about how everything works lives inside one person's head. The week that person isn't there, Sunday is basically at risk. So what we set out to support was keeping the service running no matter who shows up, and that's why we ended up focusing on Asana's &ldquo;Sunday Service&rdquo; workspace instead of the streaming software itself.</p>
+  </section>
+
+  <!-- ============ 02 WHAT WE TESTED ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 02 · What We Tested</div>
+    <h2>Four competing directions</h2>
+    <p>Instead of polishing one idea to death, we built four high-fidelity screens. Each one was basically a bet on a different answer to the same question: what does this team actually need?</p>
+
+    <figure class="shot">
+      <img src="assets/cogs127-volunteer-first.png" alt="Asana 'Sunday Service' list reorganized around volunteers, with summary cards for total, confirmed, and missing roles, and volunteers grouped by readiness status." loading="lazy">
+      <figcaption><span class="shot__tag">A · Volunteer-first view</span>Organized around people: who's free, what they're doing, and who you still need to follow up with.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="assets/cogs127-role-based.png" alt="Asana list organized by service role, with a red banner flagging the unfilled Audio Lead role, split into pre-service, live, and post-service sections." loading="lazy">
+      <figcaption><span class="shot__tag">B · Role-based view</span>Organized by role instead, so you can see who's covering each one and what's still open.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="assets/cogs127-live-issue.png" alt="A live-service tab with a Find Live Replacement panel recommending available volunteers to cover a reported audio issue." loading="lazy">
+      <figcaption><span class="shot__tag">C · Live issue panel</span>A live tab for flagging a problem mid-service and pulling in a replacement.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="assets/cogs127-live-command.png" alt="A live dashboard showing service status, active role coverage, an active issues queue, and a team communication feed." loading="lazy">
+      <figcaption><span class="shot__tag">D · Live command center</span>The full version: run of show, role coverage, an issue queue, and a team feed, all in one live dashboard.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 03 METHOD ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 03 · Method</div>
+    <h2>Two users, one call each</h2>
+    <p>We tested with two people who actually do this: one who leads the tech team across a few Sunday services, and one who runs the livestream himself. Both sessions were over Zoom, one person at a time. They clicked through the screens and just talked out loud about what they were seeing.</p>
+    <h3>One thing I should be upfront about</h3>
+    <p>These were walkthroughs of static screens, not hands-on usability tests, so I'm not going to pretend I have task times or error rates. We showed each screen and talked it through, and the useful part was really their gut reactions and what they said they'd actually use.</p>
+  </section>
+
+  <!-- ============ 04 FINDINGS ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 04 · Findings</div>
+    <h2>What testing told us</h2>
+    <p>A few reactions came up with both people and were strong enough that they ended up changing the whole direction of the project.</p>
+
+    <div class="find">
+      <div class="find__n">01</div>
+      <div>
+        <h3>A plain list of volunteers wasn't really the problem.</h3>
+        <p>At a small church, the leader already knows who their volunteers are. What they're actually stressing about before Sunday is whether everyone's confirmed and whether any role is still empty. So a screen that just lists people doesn't help them much on its own.</p>
+        <span class="find__drove">→ So we dropped the volunteer-first view as our main idea</span>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="find__n">02</div>
+      <div>
+        <h3>The role-based view matched the question they actually ask every week.</h3>
+        <p>Organizing by role and making the empty roles obvious lined up with the real question they have: do we have the right people for this service? Both of them did say that breaking everything down into tiny tasks was overkill, since volunteers already know what their job is.</p>
+        <span class="find__drove">→ Role-based planning became our main direction</span>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="find__n">03</div>
+      <div>
+        <h3>Our two users split on skill-matching, so we dropped it.</h3>
+        <p>One of them thought a skill-match label was useful for slotting the right person into a role. The other one thought it was just clutter. Instead of picking a side, we swapped it for a short guide (basically an SOP) for each role, so the role is easy to learn instead of something the app has to track.</p>
+        <span class="find__drove">→ Replaced skill-match with a short guide for each role</span>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="find__n">04</div>
+      <div>
+        <h3>Nobody cares about a "who's online" view once the service starts.</h3>
+        <p>We'd put a ton of work into showing who was covering each role during the service. Both users told us that part wasn't useful&nbsp;&mdash; by the time service starts, the team is all together in the back and already knows who showed up. What the live screen should really do is help them catch and fix the stuff that breaks.</p>
+        <span class="find__drove">→ Refocused the live mode on problems, not who's around</span>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="find__n">05</div>
+      <div>
+        <h3>The livestream itself is the real blind spot.</h3>
+        <p>During the service, the operator isn't actually watching the YouTube or Facebook feed. The way he finds out it dropped is when someone texts him. The one thing he got really excited about was a feature that catches when the stream cuts out and pings him.</p>
+        <span class="find__drove">→ Added livestream monitoring and alerts</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 BEFORE / AFTER ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 05 · Before &amp; After</div>
+    <h2>Three things that change for the person running Sunday</h2>
+    <p>Each of these starts with something a user told us they deal with right now, paired with the design change it led to.</p>
+
+    <div class="story-h"><span>Story 01</span>"Do we have everyone for Sunday?"</div>
+    <div class="ba">
+      <div class="ba__col ba__col--before">
+        <div class="ba__tag">Before</div>
+        <p>To figure out who's missing, the tech lead has to swipe through each service time in Planning Center one by one and hold it all in his head. Gaps show up late, sometimes not until it's already a problem.</p>
+      </div>
+      <div class="ba__col ba__col--after">
+        <div class="ba__tag">After</div>
+        <p>A readiness dashboard with a tab for each service time. Any unfilled role shows up in red the second he opens it, and he can check availability in one tap. Now coverage is the first thing he sees instead of the last thing he finds out.</p>
+      </div>
+    </div>
+
+    <div class="story-h"><span>Story 02</span>"The stream went down and we didn't know"</div>
+    <div class="ba">
+      <div class="ba__col ba__col--before">
+        <div class="ba__tag">Before</div>
+        <p>During the service, the operator is locked in on the sound in the room, not the actual broadcast. If the stream drops, the first he hears about it is a viewer texting him&nbsp;&mdash; usually after minutes of dead air.</p>
+      </div>
+      <div class="ba__col ba__col--after">
+        <div class="ba__tag">After</div>
+        <p>The live dashboard watches the stream and fires an alert the moment something breaks, so the team can jump on it right away instead of finding out after the fact.</p>
+      </div>
+    </div>
+
+    <div class="story-h"><span>Story 03</span>"The same few problems, every week"</div>
+    <p class="q">Most of the problems we solve are the same few things over and over again.
+      <cite>— Tech lead, user interview</cite></p>
+    <div class="ba">
+      <div class="ba__col ba__col--before">
+        <div class="ba__tag">Before</div>
+        <p>Problems get fixed in the moment and then forgotten. Nothing gets written down, so the team keeps hitting and re-solving the same handful of issues week after week.</p>
+      </div>
+      <div class="ba__col ba__col--after">
+        <div class="ba__tag">After</div>
+        <p>Now issues get logged during the service and can be turned into follow-up tasks. Afterward the team can look back, spot the pattern, and update the role's guide so the same thing doesn't keep coming back.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 DIRECTION ============ -->
+  <section class="case__section">
+    <div class="case__section-label">§ 06 · Direction</div>
+    <h2>From four ideas down to one</h2>
+    <p>Testing basically collapsed the four directions into one clear point of view. The product should help a team answer two questions: do we have the right people confirmed for each service, and can we see and respond fast when something goes wrong? What it shouldn't become is a heavier task tracker or a big volunteer database nobody asked for.</p>
+    <div class="wip-grid">
+      <div class="wip">
+        <div class="wip__label">Part 01</div>
+        <div class="wip__title">Sunday Readiness Dashboard</div>
+        <div class="wip__sub">A manager view organized by service time: roles, who's assigned, who's confirmed, and what's still missing.</div>
+      </div>
+      <div class="wip">
+        <div class="wip__label">Part 02</div>
+        <div class="wip__title">Volunteer Role View</div>
+        <div class="wip__sub">A simple screen that shows a volunteer their service time, their role, who they're working with, and the guide for that role.</div>
+      </div>
+      <div class="wip">
+        <div class="wip__label">Part 03</div>
+        <div class="wip__title">Live Issue Diagnosis</div>
+        <div class="wip__sub">A live view that flags problems, suggests a fix, logs them, and can spin them into tasks.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="case__footer">
+    <a href="index.html" class="case__back">← Back to portfolio</a>
+  </div>
+</article>
+
+<footer class="footer">
+  <div class="footer__line">
+    <span>© 2026 YiLong Mei</span>
+    <span>San Diego, CA → Los Angeles soon</span>
+    <span>Hand-built static site · Set in Source Serif 4 &amp; Instrument Sans</span>
+  </div>
+</footer>
+
+<script src="scroll.js"></script>
+</body>
+</html>

@@ -1,51 +1,99 @@
-// Scroll-reveal + in-focus scale boost
-console.log('[scroll.js] loaded');
-
+// Dateline — real current date in the masthead
 (function () {
-  if (!('IntersectionObserver' in window)) return;
-
-  const revealTargets = document.querySelectorAll(
-    'section, .case__section, .project, .wip, .phone'
-  );
-  console.log('[scroll.js] reveal targets:', revealTargets.length);
-
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('reveal-active');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
-  );
-  revealTargets.forEach((el) => revealObserver.observe(el));
-
-  const focusTargets = document.querySelectorAll('section, .case__section');
-  console.log('[scroll.js] focus targets:', focusTargets.length);
-
-  const focusObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.intersectionRatio >= 0.4) {
-          entry.target.classList.add('in-focus');
-        } else {
-          entry.target.classList.remove('in-focus');
-        }
-      });
-    },
-    { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] }
-  );
-  focusTargets.forEach((el) => focusObserver.observe(el));
+  var el = document.getElementById('dateline');
+  if (!el) return;
+  var d = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+  });
+  el.textContent = d + ' · San Diego, CA';
 })();
 
-// Doudou uptime counter — counts days since launch
-(function(){
-  const el = document.getElementById('uptime-days');
-  if (!el) return;
-  const launch = new Date('2025-12-01T00:00:00');  // Doudou launch date
-  const today = new Date();
-  const days = Math.floor((today - launch) / (1000 * 60 * 60 * 24));
-  el.textContent = days;
+// Uptime — days since Doudou launch
+(function () {
+  var els = document.querySelectorAll('[data-uptime]');
+  if (!els.length) return;
+  var launch = new Date('2025-12-01T00:00:00');
+  var days = Math.floor((Date.now() - launch.getTime()) / 86400000);
+  els.forEach(function (el) { el.textContent = days; });
+})();
+
+// Replay — streams the recorded Doudou session when it scrolls into view.
+// Messages exist in the HTML (visible without JS / with reduced motion);
+// the script only choreographs their entrance.
+(function () {
+  var feed = document.getElementById('replay-feed');
+  if (!feed) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var steps = Array.prototype.slice.call(feed.querySelectorAll('[data-step]'));
+  if (reduce || !('IntersectionObserver' in window)) return; // transcript already fully visible
+  feed.closest('.replay').classList.add('replay--js');
+
+  function typingDot() {
+    var t = document.createElement('div');
+    t.className = 'typing is-on';
+    t.innerHTML = '<i></i><i></i><i></i>';
+    return t;
+  }
+
+  function play() {
+    var i = 0;
+    function next() {
+      if (i >= steps.length) return;
+      var msg = steps[i];
+      var t = typingDot();
+      feed.insertBefore(t, msg);
+      feed.scrollTo({ top: feed.scrollHeight, behavior: 'smooth' });
+      setTimeout(function () {
+        t.remove();
+        msg.classList.add('is-rendered');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { msg.classList.add('is-on'); });
+        });
+        feed.scrollTo({ top: feed.scrollHeight, behavior: 'smooth' });
+        i += 1;
+        setTimeout(next, 1150);
+      }, i === 0 ? 900 : 1250);
+    }
+    setTimeout(next, 500);
+  }
+
+  var seen = false;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting && !seen) {
+        seen = true;
+        io.disconnect();
+        play();
+      }
+    });
+  }, { threshold: 0.35 });
+  io.observe(feed);
+})();
+
+// Scroll reveal — subtle fade-up; skipped for reduced motion, content
+// visible by default without JS.
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var targets = document.querySelectorAll(
+    '.index .row, .index .subrows, .colophon__grid > *, .case__section, .outcomes, .board__cell, .wip'
+  );
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-active');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }
+  );
+
+  targets.forEach(function (el) {
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
 })();
