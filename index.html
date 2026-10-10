@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (top === lastTop && top > 0) {
               window.scrollTo({ top: top, behavior: 'instant' });
               if (window.__flushScroll) window.__flushScroll();
-              done = true;
+              done = true; let set = top, n = 0; const follow = () => { const t2 = Math.round(el.getBoundingClientRect().top + window.scrollY); if (Math.abs(window.scrollY - set) > 2) return; if (Math.abs(t2 - set) > 2) { window.scrollTo({ top: t2, behavior: 'instant' }); if (window.__flushScroll) window.__flushScroll(); set = t2; } if (++n < 30) setTimeout(follow, 150); }; setTimeout(follow, 150);
               return;
             }
             lastTop = top;
