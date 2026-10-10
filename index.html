@@ -360,6 +360,29 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
     }
+      // Deep links: honor #section on load (e.g. #live-translator). The bundle
+      // swaps the document after load, so the browser's native anchor jump
+      // fires too early; wait until the section exists and its position is stable.
+      if (location.hash.length > 1) {
+        const id = decodeURIComponent(location.hash.slice(1));
+        let tries = 0, lastTop = -1, done = false;
+        const jump = () => {
+          if (done) return;
+          const el = document.getElementById(id);
+          if (el) {
+            const top = Math.round(el.getBoundingClientRect().top + window.scrollY);
+            if (top === lastTop && top > 0) {
+              window.scrollTo({ top: top, behavior: 'instant' });
+              if (window.__flushScroll) window.__flushScroll();
+              done = true;
+              return;
+            }
+            lastTop = top;
+          }
+          if (++tries < 60) setTimeout(jump, 150);
+        };
+        setTimeout(jump, 200);
+      }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
